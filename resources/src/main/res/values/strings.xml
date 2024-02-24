@@ -16,4 +16,9 @@
     <string name="orders">Orders</string>
     <string name="rewards">Rewards</string>
     <string name="account">Account</string>
+
+    <string name="no_orders_yet">No orders yet</string>
+    <string name="no_orders_yet_description">Go fill it up with delicious local pizza!</string>
+    <string name="find_pizzeria">Find a pizzeria</string>
+    <string name="what_are_you_waiting_for">What are you waiting for?</string>
 </resources>
