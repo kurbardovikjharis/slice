@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -189,7 +190,11 @@ private fun Item(item: RestaurantEntity, navigate: (String) -> Unit) {
             AsyncImage(
                 model = item.url,
                 contentDescription = stringResource(id = R.string.restaurant),
-                modifier = Modifier.clip(RoundedCornerShape(8.dp))
+                modifier =
+                Modifier
+                    .height(250.dp)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.FillWidth
             )
             Text(
                 text = item.name,
