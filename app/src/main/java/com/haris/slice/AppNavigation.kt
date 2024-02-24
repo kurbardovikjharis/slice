@@ -25,6 +25,10 @@ import com.haris.restaurantdetails.RestaurantDetails
 
 internal sealed class Screen(val route: String) {
     data object Home : Screen("home")
+    data object Search : Screen("search")
+    data object Orders : Screen("orders")
+    data object Rewards : Screen("rewards")
+    data object Account : Screen("account")
 }
 
 private sealed class LeafScreen(
@@ -33,6 +37,10 @@ private sealed class LeafScreen(
     fun createRoute(root: Screen) = "${root.route}/$route"
 
     data object Home : LeafScreen("home")
+    data object Search : LeafScreen("search")
+    data object Orders : LeafScreen("orders")
+    data object Rewards : LeafScreen("rewards")
+    data object Account : LeafScreen("account")
 
     data object RestaurantDetails : LeafScreen("restaurant_details/{id}") {
         fun createRoute(root: Screen, id: String?): String {
@@ -57,6 +65,10 @@ internal fun AppNavigation(
         modifier = modifier,
     ) {
         addHomeTopLevel(navController)
+        addSearchTopLevel(navController)
+        addOrdersTopLevel(navController)
+        addRewardsTopLevel(navController)
+        addAccountTopLevel(navController)
     }
 }
 
@@ -74,6 +86,54 @@ private fun NavGraphBuilder.addHomeTopLevel(
 }
 
 @ExperimentalAnimationApi
+private fun NavGraphBuilder.addSearchTopLevel(
+    navController: NavController
+) {
+    navigation(
+        route = Screen.Search.route,
+        startDestination = LeafScreen.Search.createRoute(Screen.Search),
+    ) {
+        addSearch(navController, Screen.Search)
+    }
+}
+
+@ExperimentalAnimationApi
+private fun NavGraphBuilder.addOrdersTopLevel(
+    navController: NavController
+) {
+    navigation(
+        route = Screen.Orders.route,
+        startDestination = LeafScreen.Orders.createRoute(Screen.Orders),
+    ) {
+        addOrders(navController, Screen.Orders)
+    }
+}
+
+@ExperimentalAnimationApi
+private fun NavGraphBuilder.addRewardsTopLevel(
+    navController: NavController
+) {
+    navigation(
+        route = Screen.Rewards.route,
+        startDestination = LeafScreen.Rewards.createRoute(Screen.Rewards),
+    ) {
+        addRewards(navController, Screen.Rewards)
+    }
+}
+
+@ExperimentalAnimationApi
+private fun NavGraphBuilder.addAccountTopLevel(
+    navController: NavController
+) {
+    navigation(
+        route = Screen.Account.route,
+        startDestination = LeafScreen.Account.createRoute(Screen.Account),
+    ) {
+        addAccount(navController, Screen.Account)
+    }
+}
+
+@ExperimentalAnimationApi
 private fun NavGraphBuilder.addHome(
     navController: NavController,
     root: Screen,
@@ -85,6 +145,66 @@ private fun NavGraphBuilder.addHome(
             val value = it
             navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
         }
+    }
+}
+
+@ExperimentalAnimationApi
+private fun NavGraphBuilder.addSearch(
+    navController: NavController,
+    root: Screen,
+) {
+    composable(
+        route = LeafScreen.Search.createRoute(root)
+    ) {
+//        Home {
+//            val value = it
+//            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
+//        }
+    }
+}
+
+@ExperimentalAnimationApi
+private fun NavGraphBuilder.addOrders(
+    navController: NavController,
+    root: Screen,
+) {
+    composable(
+        route = LeafScreen.Orders.createRoute(root)
+    ) {
+//        Home {
+//            val value = it
+//            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
+//        }
+    }
+}
+
+@ExperimentalAnimationApi
+private fun NavGraphBuilder.addRewards(
+    navController: NavController,
+    root: Screen,
+) {
+    composable(
+        route = LeafScreen.Rewards.createRoute(root)
+    ) {
+//        Home {
+//            val value = it
+//            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
+//        }
+    }
+}
+
+@ExperimentalAnimationApi
+private fun NavGraphBuilder.addAccount(
+    navController: NavController,
+    root: Screen,
+) {
+    composable(
+        route = LeafScreen.Account.createRoute(root)
+    ) {
+//        Home {
+//            val value = it
+//            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
+//        }
     }
 }
 
