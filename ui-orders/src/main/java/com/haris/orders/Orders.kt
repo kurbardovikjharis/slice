@@ -14,6 +14,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +33,11 @@ fun Orders() {
                         text = stringResource(id = R.string.orders),
                         style = MaterialTheme.typography.titleLarge
                     )
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary,
+                ),
             )
         }
     ) {
@@ -50,11 +55,11 @@ fun Orders() {
             ) {
                 Text(
                     text = stringResource(id = R.string.no_orders_yet),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.displaySmall
                 )
                 Text(
                     text = stringResource(id = R.string.no_orders_yet_description),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.bodyMedium
                 )
                 Button(
                     modifier = Modifier.fillMaxWidth(),
@@ -62,13 +67,13 @@ fun Orders() {
                 ) {
                     Text(
                         text = stringResource(id = R.string.find_pizzeria),
-                        style = MaterialTheme.typography.titleLarge
+                        style = MaterialTheme.typography.labelLarge
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = stringResource(id = R.string.what_are_you_waiting_for),
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.labelLarge
                 )
             }
         }
