@@ -1,10 +1,10 @@
 package com.haris.home.interactors
 
-import com.haris.home.repositories.HomeRepository
+import com.haris.home.repositories.Repository
 import javax.inject.Inject
 
 internal class GetRestaurantsInteractor @Inject constructor(
-    private val repository: HomeRepository
+    private val repository: Repository
 ) {
 
     val flow = repository.data

@@ -1,6 +1,6 @@
 package com.haris.home.data
 
-data class RestaurantEntity(
+data class Entity(
     val id: String,
     val name: String,
     val url: String,

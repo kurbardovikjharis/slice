@@ -1,21 +1,21 @@
 package com.haris.home.repositories
 
-import com.haris.home.data.RestaurantEntity
-import com.haris.home.data.Result
+import com.haris.data.Result
+import com.haris.home.data.Entity
 import com.haris.home.datasource.LocalDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
 import javax.inject.Inject
 
-internal class HomeRepositoryImpl @Inject constructor(
+internal class RepositoryImpl @Inject constructor(
     private val dataSource: LocalDataSource
-) : HomeRepository {
+) : Repository {
 
-    private val _data: MutableStateFlow<Result<List<RestaurantEntity>>> =
+    private val _data: MutableStateFlow<Result<List<Entity>>> =
         MutableStateFlow(Result.None())
 
-    override val data: Flow<Result<List<RestaurantEntity>>>
+    override val data: Flow<Result<List<Entity>>>
         get() = _data
 
     override suspend fun getSensors() {

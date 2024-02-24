@@ -37,7 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.haris.home.data.RestaurantEntity
+import com.haris.home.data.Entity
 import com.haris.resources.R
 
 @Composable
@@ -162,7 +162,7 @@ private fun Loading(
 }
 
 @Composable
-private fun Restaurants(sensors: List<RestaurantEntity>, navigate: (String) -> Unit) {
+private fun Restaurants(sensors: List<Entity>, navigate: (String) -> Unit) {
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -177,7 +177,7 @@ private fun Restaurants(sensors: List<RestaurantEntity>, navigate: (String) -> U
 }
 
 @Composable
-private fun Item(item: RestaurantEntity, navigate: (String) -> Unit) {
+private fun Item(item: Entity, navigate: (String) -> Unit) {
     Card(
         onClick = { navigate(item.id) },
         modifier = Modifier.fillMaxWidth(),

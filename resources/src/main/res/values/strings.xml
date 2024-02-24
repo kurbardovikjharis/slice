@@ -7,4 +7,7 @@
     <string name="separator">Separator</string>
 
     <string name="pickup_near">Pickup near</string>
+
+    <string name="restaurant_details">Restaurant Details</string>
+    <string name="back">Back</string>
 </resources>

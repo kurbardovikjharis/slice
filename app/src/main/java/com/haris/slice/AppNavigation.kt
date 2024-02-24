@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.haris.home.Home
+import com.haris.restaurantdetails.RestaurantDetails
 
 internal sealed class Screen(val route: String) {
     data object Home : Screen("home")
@@ -98,7 +99,7 @@ private fun NavGraphBuilder.addRestaurantDetails(
             navArgument("id") { type = NavType.StringType },
         ),
     ) {
-//        RestaurantDetails(navController::navigateUp)
+        RestaurantDetails(navController::navigateUp)
     }
 }
 

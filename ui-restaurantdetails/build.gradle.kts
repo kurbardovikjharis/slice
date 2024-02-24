@@ -1,25 +1,20 @@
+@Suppress("DSL_SCOPE_VIOLATION") // TODO: Remove once KTIJ-19369 is fixed
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlin)
     kotlin("kapt")
     alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "com.haris.slice"
+    namespace = "com.haris.restaurantdetails"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.haris.slice"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -44,17 +39,11 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.10"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
 }
 
 dependencies {
+    implementation(project(":data"))
     implementation(project(":resources"))
-    implementation(project(":ui-home"))
-    implementation(project(":ui-restaurantdetails"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtimeCompose)
@@ -71,14 +60,17 @@ dependencies {
     implementation(libs.moshi.kotlin)
 
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.navigation.compose)
+    implementation(libs.timber)
+
+    implementation(libs.coil.compose)
 
     testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
-}
+    androidTestImplementation(libs.androidx.ui.test.junit4)
 
-// Allow references to generated code
-kapt {
-    correctErrorTypes = true
+    debugImplementation(libs.androidx.ui.test.manifest)
 }
