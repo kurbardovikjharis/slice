@@ -42,6 +42,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":resources"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtimeCompose)
@@ -59,6 +60,8 @@ dependencies {
 
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.timber)
+
+    implementation(libs.coil.compose)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

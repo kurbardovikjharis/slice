@@ -52,6 +52,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":resources"))
     implementation(project(":ui-home"))
 
     implementation(libs.androidx.core.ktx)

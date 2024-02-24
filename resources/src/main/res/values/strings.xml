@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Slice</string>
+
+    <string name="retry">Retry</string>
+    <string name="star">Star</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="separator">Separator</string>
+
+    <string name="pickup_near">Pickup near</string>
+</resources>

@@ -29,20 +29,20 @@ internal class SensorsViewModel @Inject constructor(
         when (it) {
             is Result.Success -> {
                 SensorsViewState.Success(
-                    sensors = it.data ?: emptyList()
+                    restaurants = it.data ?: emptyList()
                 )
             }
 
             is Result.Loading -> {
                 SensorsViewState.Loading(
-                    sensors = it.data
+                    restaurants = it.data
                 )
             }
 
             is Result.Error -> {
                 SensorsViewState.Error(
                     message = it.message ?: "",
-                    sensors = it.data
+                    restaurants = it.data
                 )
             }
 
@@ -65,15 +65,15 @@ internal class SensorsViewModel @Inject constructor(
 internal sealed interface SensorsViewState {
 
     data class Success(
-        val sensors: List<RestaurantEntity>
+        val restaurants: List<RestaurantEntity>
     ) : SensorsViewState
 
     data class Error(
-        val message: String, val sensors: List<RestaurantEntity>?
+        val message: String, val restaurants: List<RestaurantEntity>?
     ) : SensorsViewState
 
     data class Loading(
-        val sensors: List<RestaurantEntity>?
+        val restaurants: List<RestaurantEntity>?
     ) : SensorsViewState
 
     data object Empty : SensorsViewState
