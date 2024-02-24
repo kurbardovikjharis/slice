@@ -20,8 +20,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.haris.account.Account
 import com.haris.home.Home
+import com.haris.orders.Orders
 import com.haris.restaurantdetails.RestaurantDetails
+import com.haris.rewards.Rewards
+import com.haris.search.Search
 
 internal sealed class Screen(val route: String) {
     data object Home : Screen("home")
@@ -156,10 +160,7 @@ private fun NavGraphBuilder.addSearch(
     composable(
         route = LeafScreen.Search.createRoute(root)
     ) {
-//        Home {
-//            val value = it
-//            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
-//        }
+        Search()
     }
 }
 
@@ -171,10 +172,7 @@ private fun NavGraphBuilder.addOrders(
     composable(
         route = LeafScreen.Orders.createRoute(root)
     ) {
-//        Home {
-//            val value = it
-//            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
-//        }
+        Orders()
     }
 }
 
@@ -186,10 +184,7 @@ private fun NavGraphBuilder.addRewards(
     composable(
         route = LeafScreen.Rewards.createRoute(root)
     ) {
-//        Home {
-//            val value = it
-//            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
-//        }
+        Rewards()
     }
 }
 
@@ -201,10 +196,7 @@ private fun NavGraphBuilder.addAccount(
     composable(
         route = LeafScreen.Account.createRoute(root)
     ) {
-//        Home {
-//            val value = it
-//            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
-//        }
+        Account()
     }
 }
 
