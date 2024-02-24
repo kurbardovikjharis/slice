@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Slice"
 include(":app")
+include(":ui-home")

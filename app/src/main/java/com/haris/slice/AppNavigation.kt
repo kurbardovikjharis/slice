@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.haris.home.Home
 
 internal sealed class Screen(val route: String) {
     data object Home : Screen("home")
@@ -79,10 +80,10 @@ private fun NavGraphBuilder.addHome(
     composable(
         route = LeafScreen.Home.createRoute(root)
     ) {
-//        Home {
-//            val value = it
-//            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
-//        }
+        Home {
+            val value = it
+            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
+        }
     }
 }
 
