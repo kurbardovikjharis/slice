@@ -239,8 +239,7 @@ private fun Groups(
                         }
                     }
                 },
-
-                )
+            )
         }
         if (term.isEmpty()) {
             items(items = groups, key = { it.id }) {
