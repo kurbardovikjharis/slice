@@ -2,6 +2,7 @@ package com.haris.search.repositories
 
 import com.haris.data.Result
 import com.haris.search.data.Group
+import com.haris.search.data.Restaurant
 import com.haris.search.datasource.LocalDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,9 +15,13 @@ internal class RepositoryImpl @Inject constructor(
 
     private val _data: MutableStateFlow<Result<List<Group>>> =
         MutableStateFlow(Result.None())
+    private val _searchedRestaurants: MutableStateFlow<List<Restaurant>> =
+        MutableStateFlow(emptyList())
 
     override val data: Flow<Result<List<Group>>>
         get() = _data
+    override val searchedRestaurants: Flow<List<Restaurant>>
+        get() = _searchedRestaurants
 
     override suspend fun getData() {
         val cachedData = _data.value.data
@@ -38,5 +43,9 @@ internal class RepositoryImpl @Inject constructor(
                 data = cachedData
             )
         }
+    }
+
+    override suspend fun searchRestaurants(term: String) {
+        _searchedRestaurants.value = dataSource.searchRestaurants(term)
     }
 }

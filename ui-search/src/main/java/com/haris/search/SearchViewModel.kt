@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.haris.data.Result
 import com.haris.search.data.Group
+import com.haris.search.data.Restaurant
 import com.haris.search.interactors.GetGroupsInteractor
+import com.haris.search.interactors.SearchRestaurantsInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,6 +20,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class SensorsViewModel @Inject constructor(
     private val getGroupsInteractor: GetGroupsInteractor,
+    private val searchRestaurantsInteractor: SearchRestaurantsInteractor
 ) : ViewModel() {
 
     private val termState = MutableStateFlow("")
@@ -29,19 +32,25 @@ internal class SensorsViewModel @Inject constructor(
     }
 
     val state: StateFlow<SensorsViewState> =
-        combine(termState, getGroupsInteractor.flow) { term, groupsResult ->
+        combine(
+            termState,
+            getGroupsInteractor.flow,
+            searchRestaurantsInteractor.flow
+        ) { term, groupsResult, searchedRestaurants ->
             when (groupsResult) {
                 is Result.Success -> {
                     SensorsViewState.Success(
                         term = term,
-                        groups = groupsResult.data ?: emptyList()
+                        groups = groupsResult.data ?: emptyList(),
+                        searchedRestaurants = searchedRestaurants,
                     )
                 }
 
                 is Result.Loading -> {
                     SensorsViewState.Loading(
                         term = term,
-                        groups = groupsResult.data
+                        groups = groupsResult.data,
+                        searchedRestaurants = searchedRestaurants,
                     )
                 }
 
@@ -49,7 +58,8 @@ internal class SensorsViewModel @Inject constructor(
                     SensorsViewState.Error(
                         term = term,
                         message = groupsResult.message ?: "",
-                        groups = groupsResult.data
+                        groups = groupsResult.data,
+                        searchedRestaurants = searchedRestaurants,
                     )
                 }
 
@@ -63,6 +73,9 @@ internal class SensorsViewModel @Inject constructor(
 
     fun search(term: String) {
         termState.value = term
+        viewModelScope.launch {
+            searchRestaurantsInteractor(term)
+        }
     }
 
     fun retry() {
@@ -77,18 +90,21 @@ internal sealed interface SensorsViewState {
 
     data class Success(
         val term: String,
-        val groups: List<Group>
+        val groups: List<Group>,
+        val searchedRestaurants: List<Restaurant>,
     ) : SensorsViewState
 
     data class Error(
         val message: String,
         val term: String,
-        val groups: List<Group>?
+        val groups: List<Group>?,
+        val searchedRestaurants: List<Restaurant>,
     ) : SensorsViewState
 
     data class Loading(
         val term: String,
-        val groups: List<Group>?
+        val groups: List<Group>?,
+        val searchedRestaurants: List<Restaurant>,
     ) : SensorsViewState
 
     data object Empty : SensorsViewState

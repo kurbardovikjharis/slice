@@ -124,6 +124,7 @@ private fun Success(
     Groups(
         term = state.term,
         groups = state.groups,
+        searchedRestaurants = state.searchedRestaurants,
         onTermChanged = onTermChanged,
         navigate = navigate,
     )
@@ -145,6 +146,7 @@ private fun Error(
             Groups(
                 term = state.term,
                 groups = state.groups,
+                searchedRestaurants = state.searchedRestaurants,
                 onTermChanged = onTermChanged,
                 navigate = navigate
             )
@@ -177,6 +179,7 @@ private fun Loading(
             Groups(
                 term = state.term,
                 groups = state.groups,
+                searchedRestaurants = state.searchedRestaurants,
                 onTermChanged = onTermChanged,
                 navigate = navigate
             )
@@ -196,6 +199,7 @@ private fun Loading(
 private fun Groups(
     term: String,
     groups: List<Group>,
+    searchedRestaurants: List<Restaurant>,
     onTermChanged: (String) -> Unit,
     navigate: (String) -> Unit
 ) {
@@ -227,14 +231,20 @@ private fun Groups(
                 }
             )
         }
-        items(items = groups, key = { it.id }) {
-            Item(item = it, navigate = navigate)
+        if (term.isEmpty()) {
+            items(items = groups, key = { it.id }) {
+                Group(item = it, navigate = navigate)
+            }
+        } else {
+            items(items = searchedRestaurants, key = { it.id }) {
+                Restaurant(item = it, navigate = navigate)
+            }
         }
     }
 }
 
 @Composable
-private fun Item(item: Group, navigate: (String) -> Unit) {
+private fun Group(item: Group, navigate: (String) -> Unit) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
