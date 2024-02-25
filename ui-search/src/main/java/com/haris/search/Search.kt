@@ -21,6 +21,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -224,12 +225,22 @@ private fun Groups(
                     )
                 },
                 trailingIcon = {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_map_24),
-                        contentDescription = stringResource(id = R.string.map)
-                    )
-                }
-            )
+                    if (term.isEmpty()) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_map_24),
+                            contentDescription = stringResource(id = R.string.map)
+                        )
+                    } else {
+                        IconButton(onClick = { onTermChanged("") }) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_close_24),
+                                contentDescription = stringResource(id = R.string.close)
+                            )
+                        }
+                    }
+                },
+
+                )
         }
         if (term.isEmpty()) {
             items(items = groups, key = { it.id }) {
