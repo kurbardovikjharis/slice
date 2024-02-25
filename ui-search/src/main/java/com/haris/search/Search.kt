@@ -237,7 +237,7 @@ private fun Groups(
             }
         } else {
             items(items = searchedRestaurants, key = { it.id }) {
-                Restaurant(item = it, navigate = navigate)
+                SearchedRestaurant(item = it, navigate = navigate)
             }
         }
     }
@@ -289,8 +289,7 @@ private fun Restaurant(item: Restaurant, navigate: (String) -> Unit) {
             AsyncImage(
                 model = item.url,
                 contentDescription = stringResource(id = R.string.restaurant),
-                modifier =
-                Modifier
+                modifier = Modifier
                     .height(200.dp)
                     .width(250.dp)
                     .clip(RoundedCornerShape(8.dp)),
@@ -337,5 +336,39 @@ private fun Restaurant(item: Restaurant, navigate: (String) -> Unit) {
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun SearchedRestaurant(item: Restaurant, navigate: (String) -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text(
+                text = item.name,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = item.distance,
+                style = MaterialTheme.typography.labelSmall
+            )
+            Text(
+                text = item.time,
+                style = MaterialTheme.typography.labelSmall
+            )
+        }
+        AsyncImage(
+            model = item.url,
+            contentDescription = stringResource(id = R.string.restaurant),
+            modifier = Modifier
+                .height(50.dp)
+                .width(50.dp),
+            contentScale = ContentScale.Crop
+        )
     }
 }
