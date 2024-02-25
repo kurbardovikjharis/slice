@@ -1,12 +1,12 @@
 package com.haris.home.repositories
 
+import com.haris.data.Restaurant
 import com.haris.data.Result
-import com.haris.home.data.Entity
 import kotlinx.coroutines.flow.Flow
 
 internal interface Repository {
 
-    val data: Flow<Result<List<Entity>>>
+    val data: Flow<Result<List<Restaurant>>>
 
     suspend fun getData()
 }

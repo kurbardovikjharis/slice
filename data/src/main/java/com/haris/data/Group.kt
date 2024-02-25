@@ -1,4 +1,4 @@
-package com.haris.search.data
+package com.haris.data
 
 data class Group(
     val id: String,

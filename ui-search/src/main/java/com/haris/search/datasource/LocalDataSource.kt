@@ -1,7 +1,7 @@
 package com.haris.search.datasource
 
-import com.haris.search.data.Group
-import com.haris.search.data.Restaurant
+import com.haris.data.Group
+import com.haris.data.Restaurant
 
 interface LocalDataSource {
 

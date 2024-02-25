@@ -2,8 +2,8 @@ package com.haris.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.haris.data.Restaurant
 import com.haris.data.Result
-import com.haris.home.data.Entity
 import com.haris.home.interactors.GetRestaurantsInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -65,15 +65,15 @@ internal class SensorsViewModel @Inject constructor(
 internal sealed interface SensorsViewState {
 
     data class Success(
-        val restaurants: List<Entity>
+        val restaurants: List<Restaurant>
     ) : SensorsViewState
 
     data class Error(
-        val message: String, val restaurants: List<Entity>?
+        val message: String, val restaurants: List<Restaurant>?
     ) : SensorsViewState
 
     data class Loading(
-        val restaurants: List<Entity>?
+        val restaurants: List<Restaurant>?
     ) : SensorsViewState
 
     data object Empty : SensorsViewState

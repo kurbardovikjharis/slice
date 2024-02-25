@@ -40,9 +40,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.haris.data.Group
+import com.haris.data.Restaurant
 import com.haris.resources.R
-import com.haris.search.data.Group
-import com.haris.search.data.Restaurant
 
 @Composable
 fun Search(navigate: (String) -> Unit) {

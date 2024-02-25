@@ -1,8 +1,8 @@
 package com.haris.search.repositories
 
+import com.haris.data.Group
+import com.haris.data.Restaurant
 import com.haris.data.Result
-import com.haris.search.data.Group
-import com.haris.search.data.Restaurant
 import kotlinx.coroutines.flow.Flow
 
 internal interface Repository {
