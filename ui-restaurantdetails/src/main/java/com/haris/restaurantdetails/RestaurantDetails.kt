@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -159,15 +160,21 @@ private fun Content(data: RestaurantDetailsEntity) {
 
 @Composable
 private fun Header(data: RestaurantDetailsEntity) {
-    Column {
+    Column(
+        modifier = Modifier.padding(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
         Text(text = data.name, style = MaterialTheme.typography.titleLarge)
-        Row {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Icon(
                 painter = painterResource(id = R.drawable.outline_kid_star_24),
-                contentDescription = stringResource(id = R.string.star)
+                contentDescription = stringResource(id = R.string.star),
+                tint = Color.Unspecified
             )
-            Text(text = data.rating, style = MaterialTheme.typography.titleLarge)
-            Text(text = data.numberOfRatings, style = MaterialTheme.typography.titleLarge)
+            Text(text = data.rating, style = MaterialTheme.typography.labelLarge)
         }
     }
 }

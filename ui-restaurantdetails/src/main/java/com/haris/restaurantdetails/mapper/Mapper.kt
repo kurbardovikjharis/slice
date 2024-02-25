@@ -8,8 +8,7 @@ internal fun RestaurantDetails.toRestaurantDetailsEntity(): RestaurantDetailsEnt
         id = id,
         name = name,
         url = url,
-        rating = rating,
-        numberOfRatings = "($numberOfRatings)",
+        rating = "$rating ($numberOfRatings)",
         time = time,
         distance = distance
     )

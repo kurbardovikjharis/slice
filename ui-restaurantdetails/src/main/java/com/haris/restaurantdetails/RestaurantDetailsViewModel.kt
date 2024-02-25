@@ -6,10 +6,9 @@ import androidx.lifecycle.viewModelScope
 import com.haris.data.Result
 import com.haris.restaurantdetails.interactors.GetRestaurantDetailsInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.annotation.concurrent.Immutable
@@ -25,9 +24,6 @@ internal class RestaurantDetailsViewModel @Inject constructor(
 
     private val id: String? = savedStateHandle.get<String>(ID)
 
-    private val isPM10Checked = MutableStateFlow(true)
-    private val isPM25Checked = MutableStateFlow(false)
-
     init {
         if (id != null) {
             viewModelScope.launch {
@@ -36,20 +32,16 @@ internal class RestaurantDetailsViewModel @Inject constructor(
         }
     }
 
-    val state: StateFlow<RestaurantDetailsViewState> = combine(
-        getSensorDetailsInteractor.flow,
-        isPM10Checked,
-        isPM25Checked
-    ) { sensorDetailsResult, isPM10Checked, isPM25Checked ->
-        val data = sensorDetailsResult.data
-        when (sensorDetailsResult) {
+    val state: StateFlow<RestaurantDetailsViewState> = getSensorDetailsInteractor.flow.map {
+        val data = it.data
+        when (it) {
             is Result.Success -> {
                 if (data != null) {
                     RestaurantDetailsViewState.Success(data)
                 } else {
                     RestaurantDetailsViewState.Error(
-                        sensorDetailsResult.message ?: "",
-                        null
+                        message = it.message ?: "",
+                        data = null
                     )
                 }
             }
@@ -60,8 +52,8 @@ internal class RestaurantDetailsViewModel @Inject constructor(
 
             is Result.Error -> {
                 RestaurantDetailsViewState.Error(
-                    sensorDetailsResult.message ?: "",
-                    data
+                    message = it.message ?: "",
+                    data = data
                 )
             }
 
@@ -104,7 +96,6 @@ internal data class RestaurantDetailsEntity(
     val name: String,
     val url: String,
     val rating: String,
-    val numberOfRatings: String,
     val time: String,
     val distance: String,
 )
