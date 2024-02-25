@@ -194,7 +194,7 @@ private fun Item(item: Restaurant, navigate: (String) -> Unit) {
                 Modifier
                     .height(250.dp)
                     .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.Crop
             )
             Text(
                 text = item.name,

@@ -36,9 +36,72 @@ val restaurant4 = Restaurant(
     time = "15-30 min",
     distance = "3.16 mi",
 )
+val restaurant5 = Restaurant(
+    id = "5",
+    name = "Borgata Pizza Cafe Budd Dairy",
+    url = "https://offloadmedia.feverup.com/secretstockholm.co/wp-content/uploads/2023/08/25171232/1889-1-1024x728.jpg",
+    rating = "4.8",
+    numberOfRatings = "66",
+    time = "15-30 min",
+    distance = "4.26 mi",
+)
+val restaurant6 = Restaurant(
+    id = "6",
+    name = "Jet's Pizza",
+    url = "https://preppykitchen.com/wp-content/uploads/2021/10/Cheese-Pizza-Recipe-Card-500x500.jpg",
+    rating = "4.3",
+    numberOfRatings = "22",
+    time = "15-30 min",
+    distance = "4.33 mi",
+)
+val restaurant7 = Restaurant(
+    id = "7",
+    name = "Brio Italian Grille",
+    url = "https://s23209.pcdn.co/wp-content/uploads/2022/05/Sheet-Pan-Pizza211129_DAMN-DELICIOUS_Sheet-Pan-Pizza_482.jpg",
+    rating = "New",
+    numberOfRatings = "0",
+    time = "30-45 min",
+    distance = "4.35 mi",
+)
+val restaurant8 = Restaurant(
+    id = "8",
+    name = "Del Baggio Pizzeria",
+    url = "https://static.mathem.se/shared/images/recipes/doublelarge/napolitansk-pizza-mozzarella_foto_andrea-klintbjer_mathem.jpeg",
+    rating = "4.9",
+    numberOfRatings = "41",
+    time = "15-30 min",
+    distance = "4.41 mi",
+)
+val restaurant9 = Restaurant(
+    id = "9",
+    name = "Buca Di Beppo",
+    url = "https://www.santamariaworld.com/optimized/recipe-large/globalassets/_recipes/tex-mex/pizza_gronsaker.jpg",
+    rating = "New",
+    numberOfRatings = "0",
+    time = "15-30 min",
+    distance = "4.70 mi",
+)
+val restaurant10 = Restaurant(
+    id = "10",
+    name = "Piece of Chicago Carryout",
+    url = "https://www.seriouseats.com/thmb/1KXAouO18DZnB7JfoaEUhP5z81c=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/__opt__aboutcom__coeus__resources__content_migration__serious_eats__seriouseats.com__2017__02__20170216-detroit-style-pizza-47-1500x1125-1-233d75e6021048b3bf3cf28bd59d310b.jpg",
+    rating = "4.2",
+    numberOfRatings = "18",
+    time = "15-30 min",
+    distance = "3.11 mi",
+)
 
 val restaurants = listOf(
-    restaurant1, restaurant2, restaurant3, restaurant4
+    restaurant1,
+    restaurant2,
+    restaurant3,
+    restaurant4,
+    restaurant5,
+    restaurant6,
+    restaurant7,
+    restaurant8,
+    restaurant9,
+    restaurant10
 )
 
 val group1 = Group(
@@ -49,17 +112,17 @@ val group1 = Group(
 val group2 = Group(
     id = "2",
     name = "Hot & fresh to slice",
-    restaurants = restaurants
+    restaurants = restaurants.sortedBy { it.numberOfRatings }
 )
 val group3 = Group(
     id = "3",
-    name = "Hot & fresh to slice",
-    restaurants = restaurants
+    name = "Deepest discounts",
+    restaurants = restaurants.sortedBy { it.rating }
 )
 val group4 = Group(
     id = "4",
-    name = "Hot & fresh to slice",
-    restaurants = restaurants
+    name = "Pizza near you",
+    restaurants = restaurants.sortedBy { it.name }
 )
 
 val groups = listOf(group1, group2, group3, group4)

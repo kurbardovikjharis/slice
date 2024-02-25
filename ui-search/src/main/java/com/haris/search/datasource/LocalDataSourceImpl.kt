@@ -16,6 +16,6 @@ internal class LocalDataSourceImpl : LocalDataSource {
     }
 
     override suspend fun searchRestaurants(term: String): List<Restaurant> {
-        return restaurants.filter { it.name.contains(term) }
+        return restaurants.filter { it.name.contains(term, true) }
     }
 }
