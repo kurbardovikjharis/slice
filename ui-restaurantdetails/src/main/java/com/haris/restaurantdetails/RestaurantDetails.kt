@@ -24,11 +24,14 @@ import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -49,11 +52,13 @@ private fun RestaurantDetails(
     navigateUp: () -> Unit
 ) {
     val state = viewModel.state.collectAsState().value
+    val scrollBehavior =
+        TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             LargeTopAppBar(
-                modifier = Modifier.background(MaterialTheme.colorScheme.primary),
                 title = {
                     Text(text = stringResource(id = R.string.restaurant_details))
                 },
@@ -64,7 +69,8 @@ private fun RestaurantDetails(
                             contentDescription = stringResource(id = R.string.back)
                         )
                     }
-                }
+                },
+                scrollBehavior = scrollBehavior,
             )
         }
     ) {
@@ -73,24 +79,31 @@ private fun RestaurantDetails(
                 .fillMaxSize()
                 .padding(it)
         ) {
-            HandleState(state = state, retry = { viewModel.retry() })
+            HandleState(
+                state = state,
+                isCollapsed = scrollBehavior.state.collapsedFraction == 1f,
+                retry = { viewModel.retry() })
         }
     }
 }
 
 @Composable
-internal fun HandleState(state: RestaurantDetailsViewState, retry: () -> Unit) {
+internal fun HandleState(
+    state: RestaurantDetailsViewState,
+    isCollapsed: Boolean,
+    retry: () -> Unit
+) {
     when (state) {
         is RestaurantDetailsViewState.Success -> {
-            Success(state)
+            Success(state, isCollapsed)
         }
 
         is RestaurantDetailsViewState.Error -> {
-            Error(state, retry)
+            Error(state, isCollapsed, retry)
         }
 
         is RestaurantDetailsViewState.Loading -> {
-            Loading(state)
+            Loading(state, isCollapsed)
         }
 
         is RestaurantDetailsViewState.Empty -> {}
@@ -98,13 +111,14 @@ internal fun HandleState(state: RestaurantDetailsViewState, retry: () -> Unit) {
 }
 
 @Composable
-private fun Success(state: RestaurantDetailsViewState.Success) {
-    Content(state.data)
+private fun Success(state: RestaurantDetailsViewState.Success, isCollapsed: Boolean) {
+    Content(state.data, isCollapsed)
 }
 
 @Composable
 private fun Error(
     state: RestaurantDetailsViewState.Error,
+    isCollapsed: Boolean,
     retry: () -> Unit
 ) {
     Column(
@@ -113,7 +127,7 @@ private fun Error(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (state.data != null) {
-            Content(state.data)
+            Content(state.data, isCollapsed)
         } else {
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -130,7 +144,8 @@ private fun Error(
 
 @Composable
 private fun Loading(
-    state: RestaurantDetailsViewState.Loading
+    state: RestaurantDetailsViewState.Loading,
+    isCollapsed: Boolean
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -138,7 +153,7 @@ private fun Loading(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (state.data != null) {
-            Content(state.data)
+            Content(state.data, isCollapsed)
         } else {
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -153,10 +168,10 @@ private fun Loading(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun Content(data: RestaurantDetailsEntity) {
+private fun Content(data: RestaurantDetailsEntity, isCollapsed: Boolean) {
     LazyColumn {
         stickyHeader {
-            Header(data)
+            Header(data, isCollapsed)
         }
 
         items(items = data.menuItems, key = { it.id }) {
@@ -165,12 +180,17 @@ private fun Content(data: RestaurantDetailsEntity) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Header(data: RestaurantDetailsEntity) {
+private fun Header(data: RestaurantDetailsEntity, isCollapsed: Boolean) {
     Column(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .background(MaterialTheme.colorScheme.background),
+            .fillMaxWidth()
+            .background(
+                if (isCollapsed) TopAppBarDefaults.largeTopAppBarColors().scrolledContainerColor
+                else MaterialTheme.colorScheme.background
+            )
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(text = data.name, style = MaterialTheme.typography.titleLarge)
