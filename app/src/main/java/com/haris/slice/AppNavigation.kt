@@ -98,6 +98,7 @@ private fun NavGraphBuilder.addSearchTopLevel(
         startDestination = LeafScreen.Search.createRoute(Screen.Search),
     ) {
         addSearch(navController, Screen.Search)
+        addRestaurantDetails(navController, Screen.Search)
     }
 }
 
@@ -160,7 +161,10 @@ private fun NavGraphBuilder.addSearch(
     composable(
         route = LeafScreen.Search.createRoute(root)
     ) {
-        Search()
+        Search {
+            val value = it
+            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
+        }
     }
 }
 

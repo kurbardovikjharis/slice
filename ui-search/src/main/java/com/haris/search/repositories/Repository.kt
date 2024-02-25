@@ -1,12 +1,12 @@
-package com.haris.home.repositories
+package com.haris.search.repositories
 
 import com.haris.data.Result
-import com.haris.home.data.Entity
+import com.haris.search.data.Group
 import kotlinx.coroutines.flow.Flow
 
 internal interface Repository {
 
-    val data: Flow<Result<List<Entity>>>
+    val data: Flow<Result<List<Group>>>
 
     suspend fun getData()
 }

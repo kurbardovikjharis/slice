@@ -1,8 +1,8 @@
-package com.haris.home.repositories
+package com.haris.search.repositories
 
 import com.haris.data.Result
-import com.haris.home.data.Entity
-import com.haris.home.datasource.LocalDataSource
+import com.haris.search.data.Group
+import com.haris.search.datasource.LocalDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import timber.log.Timber
@@ -12,10 +12,10 @@ internal class RepositoryImpl @Inject constructor(
     private val dataSource: LocalDataSource
 ) : Repository {
 
-    private val _data: MutableStateFlow<Result<List<Entity>>> =
+    private val _data: MutableStateFlow<Result<List<Group>>> =
         MutableStateFlow(Result.None())
 
-    override val data: Flow<Result<List<Entity>>>
+    override val data: Flow<Result<List<Group>>>
         get() = _data
 
     override suspend fun getData() {

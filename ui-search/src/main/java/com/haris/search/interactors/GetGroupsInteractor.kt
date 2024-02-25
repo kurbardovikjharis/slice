@@ -1,9 +1,9 @@
-package com.haris.home.interactors
+package com.haris.search.interactors
 
-import com.haris.home.repositories.Repository
+import com.haris.search.repositories.Repository
 import javax.inject.Inject
 
-internal class GetRestaurantsInteractor @Inject constructor(
+internal class GetGroupsInteractor @Inject constructor(
     private val repository: Repository
 ) {
 
