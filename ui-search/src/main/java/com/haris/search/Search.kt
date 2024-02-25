@@ -24,6 +24,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -82,6 +83,7 @@ private fun Search(viewModel: SensorsViewModel, navigate: (String) -> Unit) {
         ) {
             HandleState(
                 state = state,
+                onTermChanged = { term -> viewModel.search(term) },
                 navigate = navigate,
                 retry = { viewModel.retry() }
             )
@@ -90,18 +92,23 @@ private fun Search(viewModel: SensorsViewModel, navigate: (String) -> Unit) {
 }
 
 @Composable
-internal fun HandleState(state: SensorsViewState, navigate: (String) -> Unit, retry: () -> Unit) {
+internal fun HandleState(
+    state: SensorsViewState,
+    onTermChanged: (String) -> Unit,
+    navigate: (String) -> Unit,
+    retry: () -> Unit
+) {
     when (state) {
         is SensorsViewState.Success -> {
-            Success(state = state, navigate = navigate)
+            Success(state = state, onTermChanged = onTermChanged, navigate = navigate)
         }
 
         is SensorsViewState.Error -> {
-            Error(state = state, navigate = navigate, retry = retry)
+            Error(state = state, onTermChanged = onTermChanged, navigate = navigate, retry = retry)
         }
 
         is SensorsViewState.Loading -> {
-            Loading(state = state, navigate = navigate)
+            Loading(state = state, onTermChanged = onTermChanged, navigate = navigate)
         }
 
         is SensorsViewState.Empty -> {}
@@ -109,13 +116,23 @@ internal fun HandleState(state: SensorsViewState, navigate: (String) -> Unit, re
 }
 
 @Composable
-private fun Success(state: SensorsViewState.Success, navigate: (String) -> Unit) {
-    Groups(state.groups, navigate)
+private fun Success(
+    state: SensorsViewState.Success,
+    onTermChanged: (String) -> Unit,
+    navigate: (String) -> Unit
+) {
+    Groups(
+        term = state.term,
+        groups = state.groups,
+        onTermChanged = onTermChanged,
+        navigate = navigate,
+    )
 }
 
 @Composable
 private fun Error(
     state: SensorsViewState.Error,
+    onTermChanged: (String) -> Unit,
     navigate: (String) -> Unit,
     retry: () -> Unit
 ) {
@@ -125,7 +142,12 @@ private fun Error(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (state.groups != null) {
-            Groups(state.groups, navigate)
+            Groups(
+                term = state.term,
+                groups = state.groups,
+                onTermChanged = onTermChanged,
+                navigate = navigate
+            )
         } else {
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -143,6 +165,7 @@ private fun Error(
 @Composable
 private fun Loading(
     state: SensorsViewState.Loading,
+    onTermChanged: (String) -> Unit,
     navigate: (String) -> Unit
 ) {
     Column(
@@ -151,7 +174,12 @@ private fun Loading(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (state.groups != null) {
-            Groups(state.groups, navigate)
+            Groups(
+                term = state.term,
+                groups = state.groups,
+                onTermChanged = onTermChanged,
+                navigate = navigate
+            )
         } else {
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -165,15 +193,41 @@ private fun Loading(
 }
 
 @Composable
-private fun Groups(sensors: List<Group>, navigate: (String) -> Unit) {
+private fun Groups(
+    term: String,
+    groups: List<Group>,
+    onTermChanged: (String) -> Unit,
+    navigate: (String) -> Unit
+) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         item {
-            Spacer(modifier = Modifier.height(16.dp))
+            TextField(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                value = term,
+                onValueChange = onTermChanged,
+                label = {
+                    Text(text = stringResource(id = R.string.find_restaurants))
+                },
+                leadingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_search_24),
+                        contentDescription = stringResource(id = R.string.search)
+                    )
+                },
+                trailingIcon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.baseline_map_24),
+                        contentDescription = stringResource(id = R.string.map)
+                    )
+                }
+            )
         }
-        items(items = sensors, key = { it.id }) {
+        items(items = groups, key = { it.id }) {
             Item(item = it, navigate = navigate)
         }
     }
