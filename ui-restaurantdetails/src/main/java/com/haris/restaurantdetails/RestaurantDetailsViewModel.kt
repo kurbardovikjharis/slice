@@ -18,9 +18,9 @@ import javax.inject.Inject
 const val ID = "id"
 
 @HiltViewModel
-internal class SensorDetailsViewModel @Inject constructor(
+internal class RestaurantDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    getSensorDetailsInteractor: GetRestaurantDetailsInteractor
+    private val getSensorDetailsInteractor: GetRestaurantDetailsInteractor
 ) : ViewModel() {
 
     private val id: String? = savedStateHandle.get<String>(ID)
@@ -36,55 +36,75 @@ internal class SensorDetailsViewModel @Inject constructor(
         }
     }
 
-    val state: StateFlow<SensorDetailsViewState> = combine(
+    val state: StateFlow<RestaurantDetailsViewState> = combine(
         getSensorDetailsInteractor.flow,
         isPM10Checked,
         isPM25Checked
     ) { sensorDetailsResult, isPM10Checked, isPM25Checked ->
         val data = sensorDetailsResult.data
-        val detailsData = DetailsData(data?.name ?: "")
         when (sensorDetailsResult) {
             is Result.Success -> {
-                SensorDetailsViewState.Success(detailsData)
+                if (data != null) {
+                    RestaurantDetailsViewState.Success(data)
+                } else {
+                    RestaurantDetailsViewState.Error(
+                        sensorDetailsResult.message ?: "",
+                        null
+                    )
+                }
             }
 
             is Result.Loading -> {
-                SensorDetailsViewState.Loading(detailsData)
+                RestaurantDetailsViewState.Loading(data)
             }
 
             is Result.Error -> {
-                SensorDetailsViewState.Error(
+                RestaurantDetailsViewState.Error(
                     sensorDetailsResult.message ?: "",
-                    detailsData
+                    data
                 )
             }
 
-            is Result.None -> SensorDetailsViewState.Empty
+            is Result.None -> RestaurantDetailsViewState.Empty
         }
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(),
-        initialValue = SensorDetailsViewState.Empty
+        initialValue = RestaurantDetailsViewState.Empty
     )
+
+    fun retry() {
+        if (id != null) {
+            viewModelScope.launch {
+                getSensorDetailsInteractor(id)
+            }
+        }
+    }
 }
 
 @Immutable
-internal sealed interface SensorDetailsViewState {
+internal sealed interface RestaurantDetailsViewState {
 
     data class Success(
-        val data: DetailsData
-    ) : SensorDetailsViewState
+        val data: RestaurantDetailsEntity
+    ) : RestaurantDetailsViewState
 
     data class Error(
-        val message: String, val data: DetailsData
-    ) : SensorDetailsViewState
+        val message: String, val data: RestaurantDetailsEntity?
+    ) : RestaurantDetailsViewState
 
-    data class Loading(val data: DetailsData) : SensorDetailsViewState
+    data class Loading(val data: RestaurantDetailsEntity?) : RestaurantDetailsViewState
 
-    data object Empty : SensorDetailsViewState
+    data object Empty : RestaurantDetailsViewState
 }
 
 @Immutable
-internal data class DetailsData(
-    val name: String = ""
+internal data class RestaurantDetailsEntity(
+    val id: String,
+    val name: String,
+    val url: String,
+    val rating: String,
+    val numberOfRatings: String,
+    val time: String,
+    val distance: String,
 )

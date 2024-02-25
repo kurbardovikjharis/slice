@@ -126,3 +126,15 @@ val group4 = Group(
 )
 
 val groups = listOf(group1, group2, group3, group4)
+
+val restaurantDetails1 = RestaurantDetails(
+    id = "1",
+    name = "Buckeye Pizza Express",
+    url = "https://res.cloudinary.com/anora/image/upload/t_FoF-HeroFullWidthImage-LG-LG/f_auto/folkofolk%2Fgourmetpizza",
+    rating = "4.8",
+    numberOfRatings = "19",
+    time = "15-30 min",
+    distance = "0.61 mi",
+)
+
+val restaurantsDetails = listOf(restaurantDetails1)

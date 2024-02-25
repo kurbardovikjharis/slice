@@ -1,8 +1,8 @@
 package com.haris.restaurantdetails.datasource
 
-import com.haris.restaurantdetails.data.Entity
+import com.haris.data.RestaurantDetails
 
 interface LocalDataSource {
 
-    suspend fun getData(): Entity
+    suspend fun getData(id: String): RestaurantDetails?
 }
