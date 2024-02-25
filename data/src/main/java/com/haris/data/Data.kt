@@ -135,6 +135,110 @@ val restaurantDetails1 = RestaurantDetails(
     numberOfRatings = "19",
     time = "15-30 min",
     distance = "0.61 mi",
+    menuItems = listOf(
+        MenuItem(
+            id = "1",
+            title = "Pizza",
+            items = listOf(
+                MenuSubItem(
+                    id = "1",
+                    title = "Cheese Pizza",
+                    description = "Classic cheese or create your own pizza",
+                    price = "$10.99"
+                ),
+                MenuSubItem(
+                    id = "2",
+                    title = "Buckeye Thin Crust Pizza",
+                    description = null,
+                    price = "$14.99"
+                ),
+                MenuSubItem(
+                    id = "1",
+                    title = "Buckeye Thick Crust Pizza",
+                    description = null,
+                    price = "$16.99"
+                ),
+            )
+        ),
+        MenuItem(
+            id = "2",
+            title = "Buckeye Specialty Pizzas",
+            items = listOf(
+                MenuSubItem(
+                    id = "1",
+                    title = "Buckeye Pizza",
+                    description = "Pepperoni, sausage, ham, green peppers, onions, mushrooms, extra cheese",
+                    price = "$13.99"
+                ),
+                MenuSubItem(
+                    id = "2",
+                    title = "Shrimp Scampi Pizza",
+                    description = "Mozzarella, cheese, garlic sauce, shrimp & parmesan cheese",
+                    price = "$13.99"
+                ),
+                MenuSubItem(
+                    id = "3",
+                    title = "Meat Lovers Pizza",
+                    description = "Pepperoni, sausage, ham, ground beef, bacon & extra cheese",
+                    price = "$16.99"
+                ),
+                MenuSubItem(
+                    id = "4",
+                    title = "Veggie Pizza",
+                    description = "Choose up to 5 vegetables & extra cheese",
+                    price = "$16.99"
+                ),
+                MenuSubItem(
+                    id = "5",
+                    title = "White Pizza",
+                    description = "Mozzarella, ricotta & parmesan cheese with fresh garlic & Alfredo sauce",
+                    price = "$16.99"
+                ),
+                MenuSubItem(
+                    id = "6",
+                    title = "White Pizza",
+                    description = "Mozzarella, ricotta & parmesan cheese with fresh garlic & Alfredo sauce",
+                    price = "$16.99"
+                ),
+                MenuSubItem(
+                    id = "7",
+                    title = "Buckeye Pizza",
+                    description = "Pepperoni, sausage, ham, green peppers, onions, mushrooms, extra cheese",
+                    price = "$13.99"
+                ),
+                MenuSubItem(
+                    id = "8",
+                    title = "Shrimp Scampi Pizza",
+                    description = "Mozzarella, cheese, garlic sauce, shrimp & parmesan cheese",
+                    price = "$13.99"
+                ),
+                MenuSubItem(
+                    id = "9",
+                    title = "Meat Lovers Pizza",
+                    description = "Pepperoni, sausage, ham, ground beef, bacon & extra cheese",
+                    price = "$16.99"
+                ),
+                MenuSubItem(
+                    id = "10",
+                    title = "Veggie Pizza",
+                    description = "Choose up to 5 vegetables & extra cheese",
+                    price = "$16.99"
+                ),
+                MenuSubItem(
+                    id = "11",
+                    title = "White Pizza",
+                    description = "Mozzarella, ricotta & parmesan cheese with fresh garlic & Alfredo sauce",
+                    price = "$16.99"
+                ),
+                MenuSubItem(
+                    id = "12",
+                    title = "White Pizza",
+                    description = "Mozzarella, ricotta & parmesan cheese with fresh garlic & Alfredo sauce",
+                    price = "$13.99"
+                ),
+            )
+        )
+    )
 )
 
 val restaurantsDetails = listOf(restaurantDetails1)

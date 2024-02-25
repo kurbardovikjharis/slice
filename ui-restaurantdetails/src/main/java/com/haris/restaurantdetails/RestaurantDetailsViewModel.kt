@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.haris.data.Result
+import com.haris.restaurantdetails.data.MenuItemEntity
 import com.haris.restaurantdetails.interactors.GetRestaurantDetailsInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
@@ -98,4 +99,5 @@ internal data class RestaurantDetailsEntity(
     val rating: String,
     val time: String,
     val distance: String,
+    val menuItems: List<MenuItemEntity>
 )

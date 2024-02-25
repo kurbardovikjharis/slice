@@ -8,4 +8,5 @@ data class RestaurantDetails(
     val numberOfRatings: String,
     val time: String,
     val distance: String,
+    val menuItems: List<MenuItem>
 )

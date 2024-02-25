@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LargeTopAppBar
@@ -33,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.haris.resources.R
+import com.haris.restaurantdetails.data.MenuItemEntity
 
 @Composable
 fun RestaurantDetails(navigateUp: () -> Unit) {
@@ -155,13 +158,19 @@ private fun Content(data: RestaurantDetailsEntity) {
         stickyHeader {
             Header(data)
         }
+
+        items(items = data.menuItems, key = { it.id }) {
+            MenuItem(it)
+        }
     }
 }
 
 @Composable
 private fun Header(data: RestaurantDetailsEntity) {
     Column(
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .background(MaterialTheme.colorScheme.background),
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         Text(text = data.name, style = MaterialTheme.typography.titleLarge)
@@ -176,5 +185,32 @@ private fun Header(data: RestaurantDetailsEntity) {
             )
             Text(text = data.rating, style = MaterialTheme.typography.labelLarge)
         }
+    }
+}
+
+@Composable
+private fun MenuItem(item: MenuItemEntity) {
+    Column(
+        modifier = Modifier.padding(16.dp)
+    ) {
+        Text(text = item.title, style = MaterialTheme.typography.displaySmall)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        item.items.forEach {
+            Column {
+                Text(text = it.title, style = MaterialTheme.typography.titleLarge)
+                if (it.description.isNotEmpty()) {
+                    Text(text = it.description, style = MaterialTheme.typography.titleMedium)
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(text = it.price, style = MaterialTheme.typography.titleMedium)
+
+                Spacer(modifier = Modifier.height(16.dp))
+                HorizontalDivider()
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
