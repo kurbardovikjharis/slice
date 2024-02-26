@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -188,8 +188,11 @@ private fun Content(data: RestaurantDetailsEntity, isCollapsed: Boolean) {
             )
         }
 
-        items(items = data.menuItems, key = { it.id }) {
-            MenuItem(it)
+        itemsIndexed(
+            items = data.menuItems,
+            key = { _, item -> item.id }
+        ) { index, item ->
+            MenuItem(item, index + 1 == data.menuItems.size)
         }
     }
 }
@@ -321,7 +324,7 @@ private fun StickyHeader(
 }
 
 @Composable
-private fun MenuItem(item: MenuItemEntity) {
+private fun MenuItem(item: MenuItemEntity, isLastItem: Boolean) {
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
@@ -343,6 +346,8 @@ private fun MenuItem(item: MenuItemEntity) {
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        if (!isLastItem) {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
 }
