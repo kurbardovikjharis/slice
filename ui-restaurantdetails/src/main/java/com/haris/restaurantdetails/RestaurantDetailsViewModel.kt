@@ -97,6 +97,7 @@ internal data class RestaurantDetailsEntity(
     val name: String,
     val url: String,
     val rating: String,
+    val numberOfRatings: String,
     val time: String,
     val distance: String,
     val menuItems: List<MenuItemEntity>

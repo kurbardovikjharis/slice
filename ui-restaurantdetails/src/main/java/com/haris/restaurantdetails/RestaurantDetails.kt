@@ -216,7 +216,62 @@ private fun Header(data: RestaurantDetailsEntity, isCollapsed: Boolean) {
                 contentDescription = stringResource(id = R.string.star),
                 tint = Color.Unspecified
             )
-            Text(text = data.rating, style = MaterialTheme.typography.labelLarge)
+
+            val ratingsString = stringResource(id = R.string.ratings)
+            val rating = "${data.rating} (${data.numberOfRatings} $ratingsString)"
+            Text(text = rating, style = MaterialTheme.typography.labelLarge)
+        }
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_commute_24),
+                contentDescription = stringResource(id = R.string.commute),
+                tint = Color.Unspecified
+            )
+
+            Text(text = data.time, style = MaterialTheme.typography.labelLarge)
+
+            Icon(
+                painter = painterResource(id = R.drawable.baseline_album_4),
+                contentDescription = stringResource(id = R.string.separator),
+                tint = Color.Unspecified
+            )
+
+            Text(text = data.distance, style = MaterialTheme.typography.labelLarge)
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_access_time_filled_24),
+                    contentDescription = stringResource(id = R.string.clock),
+                    tint = Color.Unspecified
+                )
+
+                Text(text = data.time, style = MaterialTheme.typography.labelLarge)
+            }
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(id = R.string.about),
+                    style = MaterialTheme.typography.labelLarge
+                )
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_arrow_forward_ios_24),
+                    contentDescription = stringResource(id = R.string.arrow_forward),
+                    tint = Color.Unspecified
+                )
+            }
         }
     }
 }

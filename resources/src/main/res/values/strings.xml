@@ -26,4 +26,11 @@
     <string name="find_restaurants">Find restaurants</string>
     <string name="map">Map</string>
     <string name="close">Close</string>
+
+    <string name="ratings">Ratings</string>
+    <string name="commute">Commute</string>
+    <string name="clock">Clock</string>
+    <string name="arrow_forward">Arrow forward</string>
+
+    <string name="about">About</string>
 </resources>

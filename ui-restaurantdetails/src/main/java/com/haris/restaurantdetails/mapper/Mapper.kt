@@ -12,7 +12,8 @@ internal fun RestaurantDetails.toRestaurantDetailsEntity(): RestaurantDetailsEnt
         id = id,
         name = name,
         url = url,
-        rating = "$rating ($numberOfRatings)",
+        rating = rating,
+        numberOfRatings = numberOfRatings,
         time = time,
         distance = distance,
         menuItems = menuItems.map { it.toMenuItemEntity() }
