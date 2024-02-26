@@ -16,4 +16,4 @@ Screens:
 * Account
 * Restaurant Details
 
-![Screenshot_20240226-102702.png](..%2F..%2FDownloads%2FScreenshot_20240226-102702.png)
+![home.png](screenshots%2Fhome.png)
