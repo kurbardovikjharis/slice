@@ -27,6 +27,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -64,20 +65,48 @@ private fun RestaurantDetails(
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
-            LargeTopAppBar(
-                title = {
-                    Text(text = stringResource(id = R.string.restaurant_details))
-                },
-                navigationIcon = {
-                    IconButton(onClick = navigateUp) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.baseline_arrow_back_24),
-                            contentDescription = stringResource(id = R.string.back)
+            if (state is RestaurantDetailsViewState.Success && state.isSearching) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    TextField(
+                        modifier = Modifier.weight(1f),
+                        value = state.term,
+                        onValueChange = { viewModel.search(it) },
+                        label = {
+                            Text(text = stringResource(id = R.string.find_menus))
+                        },
+                        leadingIcon = {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_search_24),
+                                contentDescription = stringResource(id = R.string.search)
+                            )
+                        },
+                    )
+                    TextButton(onClick = { viewModel.isSearching(false) }) {
+                        Text(
+                            text = stringResource(id = R.string.cancel),
+                            style = MaterialTheme.typography.labelLarge
                         )
                     }
-                },
-                scrollBehavior = scrollBehavior,
-            )
+                }
+            } else {
+                LargeTopAppBar(
+                    title = {
+                        Text(text = stringResource(id = R.string.restaurant_details))
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = navigateUp) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.baseline_arrow_back_24),
+                                contentDescription = stringResource(id = R.string.back)
+                            )
+                        }
+                    },
+                    scrollBehavior = scrollBehavior,
+                )
+            }
         }
     ) {
         Box(
@@ -88,7 +117,8 @@ private fun RestaurantDetails(
             HandleState(
                 state = state,
                 isCollapsed = scrollBehavior.state.collapsedFraction == 1f,
-                retry = { viewModel.retry() })
+                retry = { viewModel.retry() },
+                onSearchClicked = { viewModel.isSearching(true) })
         }
     }
 }
@@ -97,19 +127,33 @@ private fun RestaurantDetails(
 internal fun HandleState(
     state: RestaurantDetailsViewState,
     isCollapsed: Boolean,
-    retry: () -> Unit
+    retry: () -> Unit,
+    onSearchClicked: () -> Unit
 ) {
     when (state) {
         is RestaurantDetailsViewState.Success -> {
-            Success(state, isCollapsed)
+            Success(
+                state = state,
+                isCollapsed = isCollapsed,
+                onSearchClicked = onSearchClicked
+            )
         }
 
         is RestaurantDetailsViewState.Error -> {
-            Error(state, isCollapsed, retry)
+            Error(
+                state = state,
+                isCollapsed = isCollapsed,
+                retry = retry,
+                onSearchClicked = onSearchClicked
+            )
         }
 
         is RestaurantDetailsViewState.Loading -> {
-            Loading(state, isCollapsed)
+            Loading(
+                state = state,
+                isCollapsed = isCollapsed,
+                onSearchClicked = onSearchClicked
+            )
         }
 
         is RestaurantDetailsViewState.Empty -> {}
@@ -117,15 +161,25 @@ internal fun HandleState(
 }
 
 @Composable
-private fun Success(state: RestaurantDetailsViewState.Success, isCollapsed: Boolean) {
-    Content(state.data, isCollapsed)
+private fun Success(
+    state: RestaurantDetailsViewState.Success,
+    isCollapsed: Boolean,
+    onSearchClicked: () -> Unit
+) {
+    Content(
+        data = state.data,
+        isCollapsed = isCollapsed,
+        isSearching = state.isSearching,
+        onSearchClicked = onSearchClicked
+    )
 }
 
 @Composable
 private fun Error(
     state: RestaurantDetailsViewState.Error,
     isCollapsed: Boolean,
-    retry: () -> Unit
+    retry: () -> Unit,
+    onSearchClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -133,7 +187,12 @@ private fun Error(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (state.data != null) {
-            Content(state.data, isCollapsed)
+            Content(
+                data = state.data,
+                isCollapsed = isCollapsed,
+                isSearching = false,
+                onSearchClicked = onSearchClicked
+            )
         } else {
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -151,7 +210,8 @@ private fun Error(
 @Composable
 private fun Loading(
     state: RestaurantDetailsViewState.Loading,
-    isCollapsed: Boolean
+    isCollapsed: Boolean,
+    onSearchClicked: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -159,7 +219,12 @@ private fun Loading(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (state.data != null) {
-            Content(state.data, isCollapsed)
+            Content(
+                data = state.data,
+                isCollapsed = isCollapsed,
+                isSearching = false,
+                onSearchClicked = onSearchClicked
+            )
         } else {
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -174,18 +239,26 @@ private fun Loading(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun Content(data: RestaurantDetailsEntity, isCollapsed: Boolean) {
-    val state = rememberLazyListState()
-    LazyColumn(state = state) {
-        item {
-            Header(data, isCollapsed)
-        }
-        stickyHeader {
-            StickyHeader(
-                menuItem = data.menuItems,
-                isCollapsed = isCollapsed,
-                state = state
-            )
+private fun Content(
+    data: RestaurantDetailsEntity,
+    isCollapsed: Boolean,
+    isSearching: Boolean,
+    onSearchClicked: () -> Unit
+) {
+    val lazyListState = rememberLazyListState()
+    LazyColumn(state = lazyListState) {
+        if (!isSearching) {
+            item {
+                Header(data, isCollapsed)
+            }
+            stickyHeader {
+                StickyHeader(
+                    menuItem = data.menuItems,
+                    isCollapsed = isCollapsed,
+                    lazyListState = lazyListState,
+                    onSearchClicked = onSearchClicked
+                )
+            }
         }
 
         itemsIndexed(
@@ -285,7 +358,8 @@ private fun Header(data: RestaurantDetailsEntity, isCollapsed: Boolean) {
 private fun StickyHeader(
     menuItem: List<MenuItemEntity>,
     isCollapsed: Boolean,
-    state: LazyListState,
+    lazyListState: LazyListState,
+    onSearchClicked: () -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     Row(
@@ -299,7 +373,7 @@ private fun StickyHeader(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = onSearchClicked) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_search_24),
                 contentDescription = stringResource(id = R.string.search)
@@ -310,7 +384,7 @@ private fun StickyHeader(
             TextButton(
                 onClick = {
                     coroutineScope.launch {
-                        state.animateScrollToItem(
+                        lazyListState.animateScrollToItem(
                             index = index + 2,
                             scrollOffset = -pxValue.toInt()
                         )

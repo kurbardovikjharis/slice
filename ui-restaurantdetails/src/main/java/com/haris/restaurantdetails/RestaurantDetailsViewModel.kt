@@ -6,10 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.haris.data.Result
 import com.haris.restaurantdetails.data.MenuItemEntity
 import com.haris.restaurantdetails.interactors.GetRestaurantDetailsInteractor
+import com.haris.restaurantdetails.interactors.SearchMenuInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.annotation.concurrent.Immutable
@@ -20,56 +22,76 @@ const val ID = "id"
 @HiltViewModel
 internal class RestaurantDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val getSensorDetailsInteractor: GetRestaurantDetailsInteractor
+    private val getRestaurantDetailsInteractor: GetRestaurantDetailsInteractor,
+    private val searchMenuInteractor: SearchMenuInteractor
 ) : ViewModel() {
 
     private val id: String? = savedStateHandle.get<String>(ID)
 
+    private val isSearching = MutableStateFlow(false)
+    private val termState = MutableStateFlow("")
+
     init {
         if (id != null) {
             viewModelScope.launch {
-                getSensorDetailsInteractor(id)
+                getRestaurantDetailsInteractor(id)
             }
         }
     }
 
-    val state: StateFlow<RestaurantDetailsViewState> = getSensorDetailsInteractor.flow.map {
-        val data = it.data
-        when (it) {
-            is Result.Success -> {
-                if (data != null) {
-                    RestaurantDetailsViewState.Success(data)
-                } else {
+    val state: StateFlow<RestaurantDetailsViewState> =
+        combine(
+            getRestaurantDetailsInteractor.flow,
+            isSearching,
+            termState
+        ) { restaurantDetailsResult, isSearching, term ->
+            val data = restaurantDetailsResult.data
+            when (restaurantDetailsResult) {
+                is Result.Success -> {
+                    if (data != null) {
+                        RestaurantDetailsViewState.Success(isSearching, term, data)
+                    } else {
+                        RestaurantDetailsViewState.Error(
+                            message = restaurantDetailsResult.message ?: "",
+                            data = null
+                        )
+                    }
+                }
+
+                is Result.Loading -> {
+                    RestaurantDetailsViewState.Loading(data)
+                }
+
+                is Result.Error -> {
                     RestaurantDetailsViewState.Error(
-                        message = it.message ?: "",
-                        data = null
+                        message = restaurantDetailsResult.message ?: "",
+                        data = data
                     )
                 }
-            }
 
-            is Result.Loading -> {
-                RestaurantDetailsViewState.Loading(data)
+                is Result.None -> RestaurantDetailsViewState.Empty
             }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = RestaurantDetailsViewState.Empty
+        )
 
-            is Result.Error -> {
-                RestaurantDetailsViewState.Error(
-                    message = it.message ?: "",
-                    data = data
-                )
-            }
-
-            is Result.None -> RestaurantDetailsViewState.Empty
+    fun search(term: String) {
+        termState.value = term
+        viewModelScope.launch {
+            searchMenuInteractor(term)
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(),
-        initialValue = RestaurantDetailsViewState.Empty
-    )
+    }
+
+    fun isSearching(value: Boolean) {
+        isSearching.value = value
+    }
 
     fun retry() {
         if (id != null) {
             viewModelScope.launch {
-                getSensorDetailsInteractor(id)
+                getRestaurantDetailsInteractor(id)
             }
         }
     }
@@ -79,6 +101,8 @@ internal class RestaurantDetailsViewModel @Inject constructor(
 internal sealed interface RestaurantDetailsViewState {
 
     data class Success(
+        val isSearching: Boolean,
+        val term: String,
         val data: RestaurantDetailsEntity
     ) : RestaurantDetailsViewState
 
