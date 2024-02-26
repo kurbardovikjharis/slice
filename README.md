@@ -16,7 +16,7 @@ Screens:
 * Account
 * Restaurant Details
 
-[<img src="image.png" width="250"/>](screenshots%2Fhome.png)
+[<img src="home.png" width="250"/>](screenshots%2Fhome.png)
 
 
 ![home.png](screenshots%2Fhome.png)![search.png](screenshots%2Fsearch.png)![search2.png](screenshots%2Fsearch2.png)![restaurant_details.png](screenshots%2Frestaurant_details.png)
