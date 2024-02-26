@@ -19,10 +19,10 @@ Screens:
 <table>
 <tr>
 <td>
-<img src="screenshots%2Fhome.png" width="25%" height="25%">
-<img src="screenshots%2Fsearch.png" width="25%" height="25%">
-<img src="screenshots%2Fsearch2.png" width="25%" height="25%">
-<img src="screenshots%2Frestaurant_details.png" width="25%" height="25%">
+<img src="screenshots%2Fhome.png" width="20%" height="20%">
+<img src="screenshots%2Fsearch.png" width="20%" height="20%">
+<img src="screenshots%2Fsearch2.png" width="20%" height="20%">
+<img src="screenshots%2Frestaurant_details.png" width="20%" height="20%">
 </td>
 </tr>
 </table>
