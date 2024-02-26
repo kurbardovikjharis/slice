@@ -16,4 +16,4 @@ Screens:
 * Account
 * Restaurant Details
 
-![home.png](screenshots%2Fhome.png)![search.png](screenshots%2Fsearch.png)![search2.png](screenshots%2Fsearch2.png)![restaurant_details.png](screenshots%2Frestaurant_details.png)
+![search.png](screenshots%2Fsearch.png =250px)![search2.png](screenshots%2Fsearch2.png)![restaurant_details.png](screenshots%2Frestaurant_details.png)
