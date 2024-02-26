@@ -41,6 +41,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":compose"))
     implementation(project(":data"))
     implementation(project(":resources"))
 

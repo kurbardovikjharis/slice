@@ -1,12 +1,10 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.kotlin)
-    kotlin("kapt")
-    alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "com.haris.search"
+    namespace = "com.haris.compose"
     compileSdk = 34
 
     defaultConfig {
@@ -41,8 +39,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":compose"))
-    implementation(project(":data"))
     implementation(project(":resources"))
 
     implementation(libs.androidx.core.ktx)
@@ -51,16 +47,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-
-    implementation(libs.retrofit)
-    implementation(libs.converter.moshi)
-    implementation(libs.moshi.kotlin)
-
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.timber)
 
     implementation(libs.coil.compose)
 

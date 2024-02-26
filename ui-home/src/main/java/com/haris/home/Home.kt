@@ -17,13 +17,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -37,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import com.haris.compose.SliceTopAppBar
 import com.haris.data.Restaurant
 import com.haris.resources.R
 
@@ -45,32 +43,12 @@ fun Home(navigate: (String) -> Unit) {
     Home(viewModel = hiltViewModel(), navigate = navigate)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Home(viewModel: SensorsViewModel, navigate: (String) -> Unit) {
     val state = viewModel.state.collectAsState().value
 
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            text = stringResource(id = R.string.pickup_near),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        Text(
-                            text = "13th St",
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-            )
-        }
+        topBar = { SliceTopAppBar() }
     ) {
         Box(
             modifier = Modifier
