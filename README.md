@@ -17,5 +17,6 @@ Screens:
 * Restaurant Details
 
 <img src="screenshots%2Fhome.png" width="50%" height="50%">
-
-![search.png](screenshots%2Fsearch.png)![search2.png](screenshots%2Fsearch2.png)![restaurant_details.png](screenshots%2Frestaurant_details.png)
+<img src="screenshots%2Fsearch.png" width="50%" height="50%">
+<img src="screenshots%2Fsearch2.png" width="50%" height="50%">
+<img src="screenshots%2Frestaurant_details.png" width="50%" height="50%">
