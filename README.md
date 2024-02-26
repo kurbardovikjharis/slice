@@ -26,8 +26,9 @@ Slice theme
 <img src="screenshots%2Frestaurant_details_slice_theme.png" width="20%" height="20%">
 </td>
 </tr>
-
+</table>
 Dynamic theme
+<table>
 <tr>
 <td>
 <img src="screenshots%2Fhome_dynamic_theme.png" width="20%" height="20%">
