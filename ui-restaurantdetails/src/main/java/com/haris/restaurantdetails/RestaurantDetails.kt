@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -301,11 +302,15 @@ private fun StickyHeader(
                 contentDescription = stringResource(id = R.string.search)
             )
         }
+        val pxValue = LocalDensity.current.run { 52.dp.toPx() }
         menuItem.forEachIndexed { index, item ->
             TextButton(
                 onClick = {
                     coroutineScope.launch {
-                        state.animateScrollToItem(index + 2)
+                        state.animateScrollToItem(
+                            index = index + 2,
+                            scrollOffset = -pxValue.toInt()
+                        )
                     }
                 }
             ) {
