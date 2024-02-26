@@ -16,13 +16,24 @@ Screens:
 * Account
 * Restaurant Details
 
+Slice theme
 <table>
 <tr>
 <td>
-<img src="screenshots%2Fhome.png" width="20%" height="20%">
-<img src="screenshots%2Fsearch.png" width="20%" height="20%">
-<img src="screenshots%2Fsearch2.png" width="20%" height="20%">
-<img src="screenshots%2Frestaurant_details.png" width="20%" height="20%">
+<img src="screenshots%2Fhome_slice_theme.png" width="20%" height="20%">
+<img src="screenshots%2Fsearch_slice_theme.png" width="20%" height="20%">
+<img src="screenshots%2Fsearch2_slice_theme.png" width="20%" height="20%">
+<img src="screenshots%2Frestaurant_details_slice_theme.png" width="20%" height="20%">
+</td>
+</tr>
+
+Dynamic theme
+<tr>
+<td>
+<img src="screenshots%2Fhome_dynamic_theme.png" width="20%" height="20%">
+<img src="screenshots%2Fsearch_dynamic_theme.png" width="20%" height="20%">
+<img src="screenshots%2Fsearch2_dynamic_theme.png" width="20%" height="20%">
+<img src="screenshots%2Frestaurant_details_dynamic_theme.png" width="20%" height="20%">
 </td>
 </tr>
 </table>
