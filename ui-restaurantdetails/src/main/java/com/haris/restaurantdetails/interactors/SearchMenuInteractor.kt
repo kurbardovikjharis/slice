@@ -7,9 +7,9 @@ internal class SearchMenuInteractor @Inject constructor(
     private val repository: Repository
 ) {
 
-    val flow = repository.data
+    val flow = repository.searchedMenu
 
-    suspend operator fun invoke(id: String) {
-        repository.getData(id)
+    suspend operator fun invoke(term: String) {
+        repository.searchMenu(term)
     }
 }

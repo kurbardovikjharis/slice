@@ -127,6 +127,115 @@ val group4 = Group(
 
 val groups = listOf(group1, group2, group3, group4)
 
+val menuSubItem1 = MenuSubItem(
+    id = "1",
+    title = "Cheese Pizza",
+    description = "Classic cheese or create your own pizza",
+    price = "$10.99"
+)
+val menuSubItem2 = MenuSubItem(
+    id = "2",
+    title = "Buckeye Thin Crust Pizza",
+    description = null,
+    price = "$14.99"
+)
+val menuSubItem3 = MenuSubItem(
+    id = "3",
+    title = "Buckeye Thick Crust Pizza",
+    description = null,
+    price = "$16.99"
+)
+val menuSubItem4 = MenuSubItem(
+    id = "4",
+    title = "Buckeye Pizza",
+    description = "Pepperoni, sausage, ham, green peppers, onions, mushrooms, extra cheese",
+    price = "$13.99"
+)
+val menuSubItem5 = MenuSubItem(
+    id = "5",
+    title = "Shrimp Scampi Pizza",
+    description = "Mozzarella, cheese, garlic sauce, shrimp & parmesan cheese",
+    price = "$13.99"
+)
+val menuSubItem6 = MenuSubItem(
+    id = "6",
+    title = "Meat Lovers Pizza",
+    description = "Pepperoni, sausage, ham, ground beef, bacon & extra cheese",
+    price = "$16.99"
+)
+val menuSubItem7 = MenuSubItem(
+    id = "7",
+    title = "Veggie Pizza",
+    description = "Choose up to 5 vegetables & extra cheese",
+    price = "$16.99"
+)
+val menuSubItem8 = MenuSubItem(
+    id = "8",
+    title = "White Pizza",
+    description = "Mozzarella, ricotta & parmesan cheese with fresh garlic & Alfredo sauce",
+    price = "$16.99"
+)
+val menuSubItem9 = MenuSubItem(
+    id = "9",
+    title = "White Pizza",
+    description = "Mozzarella, ricotta & parmesan cheese with fresh garlic & Alfredo sauce",
+    price = "$16.99"
+)
+val menuSubItem10 = MenuSubItem(
+    id = "10",
+    title = "Buckeye Pizza",
+    description = "Pepperoni, sausage, ham, green peppers, onions, mushrooms, extra cheese",
+    price = "$13.99"
+)
+val menuSubItem11 = MenuSubItem(
+    id = "11",
+    title = "Shrimp Scampi Pizza",
+    description = "Mozzarella, cheese, garlic sauce, shrimp & parmesan cheese",
+    price = "$13.99"
+)
+val menuSubItem12 = MenuSubItem(
+    id = "12",
+    title = "Meat Lovers Pizza",
+    description = "Pepperoni, sausage, ham, ground beef, bacon & extra cheese",
+    price = "$16.99"
+)
+val menuSubItem13 = MenuSubItem(
+    id = "13",
+    title = "Veggie Pizza",
+    description = "Choose up to 5 vegetables & extra cheese",
+    price = "$16.99"
+)
+val menuSubItem14 = MenuSubItem(
+    id = "14",
+    title = "White Pizza",
+    description = "Mozzarella, ricotta & parmesan cheese with fresh garlic & Alfredo sauce",
+    price = "$16.99"
+)
+val menuSubItem15 = MenuSubItem(
+    id = "15",
+    title = "White Pizza",
+    description = "Mozzarella, ricotta & parmesan cheese with fresh garlic & Alfredo sauce",
+    price = "$13.99"
+)
+
+val menuSubItems = listOf(
+    menuSubItem1,
+    menuSubItem2,
+    menuSubItem3,
+    menuSubItem4,
+    menuSubItem5,
+    menuSubItem6,
+    menuSubItem7,
+    menuSubItem8,
+    menuSubItem9,
+    menuSubItem10,
+    menuSubItem11,
+    menuSubItem12,
+    menuSubItem13,
+    menuSubItem14,
+    menuSubItem15
+)
+
 val restaurantDetails1 = RestaurantDetails(
     id = "1",
     name = "Buckeye Pizza Express",
@@ -139,103 +248,24 @@ val restaurantDetails1 = RestaurantDetails(
         MenuItem(
             id = "1",
             title = "Pizza",
-            items = listOf(
-                MenuSubItem(
-                    id = "1",
-                    title = "Cheese Pizza",
-                    description = "Classic cheese or create your own pizza",
-                    price = "$10.99"
-                ),
-                MenuSubItem(
-                    id = "2",
-                    title = "Buckeye Thin Crust Pizza",
-                    description = null,
-                    price = "$14.99"
-                ),
-                MenuSubItem(
-                    id = "1",
-                    title = "Buckeye Thick Crust Pizza",
-                    description = null,
-                    price = "$16.99"
-                ),
-            )
+            items = listOf(menuSubItem1, menuSubItem2, menuSubItem3)
         ),
         MenuItem(
             id = "2",
             title = "Buckeye Specialty Pizzas",
             items = listOf(
-                MenuSubItem(
-                    id = "1",
-                    title = "Buckeye Pizza",
-                    description = "Pepperoni, sausage, ham, green peppers, onions, mushrooms, extra cheese",
-                    price = "$13.99"
-                ),
-                MenuSubItem(
-                    id = "2",
-                    title = "Shrimp Scampi Pizza",
-                    description = "Mozzarella, cheese, garlic sauce, shrimp & parmesan cheese",
-                    price = "$13.99"
-                ),
-                MenuSubItem(
-                    id = "3",
-                    title = "Meat Lovers Pizza",
-                    description = "Pepperoni, sausage, ham, ground beef, bacon & extra cheese",
-                    price = "$16.99"
-                ),
-                MenuSubItem(
-                    id = "4",
-                    title = "Veggie Pizza",
-                    description = "Choose up to 5 vegetables & extra cheese",
-                    price = "$16.99"
-                ),
-                MenuSubItem(
-                    id = "5",
-                    title = "White Pizza",
-                    description = "Mozzarella, ricotta & parmesan cheese with fresh garlic & Alfredo sauce",
-                    price = "$16.99"
-                ),
-                MenuSubItem(
-                    id = "6",
-                    title = "White Pizza",
-                    description = "Mozzarella, ricotta & parmesan cheese with fresh garlic & Alfredo sauce",
-                    price = "$16.99"
-                ),
-                MenuSubItem(
-                    id = "7",
-                    title = "Buckeye Pizza",
-                    description = "Pepperoni, sausage, ham, green peppers, onions, mushrooms, extra cheese",
-                    price = "$13.99"
-                ),
-                MenuSubItem(
-                    id = "8",
-                    title = "Shrimp Scampi Pizza",
-                    description = "Mozzarella, cheese, garlic sauce, shrimp & parmesan cheese",
-                    price = "$13.99"
-                ),
-                MenuSubItem(
-                    id = "9",
-                    title = "Meat Lovers Pizza",
-                    description = "Pepperoni, sausage, ham, ground beef, bacon & extra cheese",
-                    price = "$16.99"
-                ),
-                MenuSubItem(
-                    id = "10",
-                    title = "Veggie Pizza",
-                    description = "Choose up to 5 vegetables & extra cheese",
-                    price = "$16.99"
-                ),
-                MenuSubItem(
-                    id = "11",
-                    title = "White Pizza",
-                    description = "Mozzarella, ricotta & parmesan cheese with fresh garlic & Alfredo sauce",
-                    price = "$16.99"
-                ),
-                MenuSubItem(
-                    id = "12",
-                    title = "White Pizza",
-                    description = "Mozzarella, ricotta & parmesan cheese with fresh garlic & Alfredo sauce",
-                    price = "$13.99"
-                ),
+                menuSubItem4,
+                menuSubItem5,
+                menuSubItem6,
+                menuSubItem7,
+                menuSubItem8,
+                menuSubItem9,
+                menuSubItem10,
+                menuSubItem11,
+                menuSubItem12,
+                menuSubItem13,
+                menuSubItem14,
+                menuSubItem15,
             )
         )
     )

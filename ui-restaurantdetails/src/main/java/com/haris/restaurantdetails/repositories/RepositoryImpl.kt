@@ -1,5 +1,6 @@
 package com.haris.restaurantdetails.repositories
 
+import com.haris.data.MenuSubItem
 import com.haris.data.Result
 import com.haris.restaurantdetails.RestaurantDetailsEntity
 import com.haris.restaurantdetails.datasource.LocalDataSource
@@ -15,9 +16,13 @@ internal class RepositoryImpl @Inject constructor(
 
     private val _data: MutableStateFlow<Result<RestaurantDetailsEntity>> =
         MutableStateFlow(Result.None())
+    private val _searchedMenu: MutableStateFlow<List<MenuSubItem>> =
+        MutableStateFlow(emptyList())
 
     override val data: Flow<Result<RestaurantDetailsEntity>>
         get() = _data
+    override val searchedMenu: Flow<List<MenuSubItem>>
+        get() = _searchedMenu
 
     override suspend fun getData(id: String) {
         val cachedData = _data.value.data
@@ -39,5 +44,9 @@ internal class RepositoryImpl @Inject constructor(
                 data = cachedData
             )
         }
+    }
+
+    override suspend fun searchMenu(term: String) {
+        _searchedMenu.value = dataSource.searchMenu(term)
     }
 }

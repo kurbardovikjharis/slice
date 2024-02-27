@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
@@ -43,6 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.haris.data.MenuSubItem
 import com.haris.resources.R
 import com.haris.restaurantdetails.data.MenuItemEntity
 import kotlinx.coroutines.launch
@@ -261,11 +263,20 @@ private fun Content(
             }
         }
 
-        itemsIndexed(
-            items = data.menuItems,
-            key = { _, item -> item.id }
-        ) { index, item ->
-            MenuItem(item, index + 1 == data.menuItems.size)
+        if (isSearching) {
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+            items(items = data.searchedMenu, key = { it.id }) {
+                SearchedMenuSubItem(item = it)
+            }
+        } else {
+            itemsIndexed(
+                items = data.menuItems,
+                key = { _, item -> item.id }
+            ) { index, item ->
+                MenuItem(item, index + 1 == data.menuItems.size)
+            }
         }
     }
 }
@@ -424,4 +435,35 @@ private fun MenuItem(item: MenuItemEntity, isLastItem: Boolean) {
             Spacer(modifier = Modifier.height(16.dp))
         }
     }
+}
+
+@Composable
+private fun SearchedMenuSubItem(item: MenuSubItem) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column {
+            Text(
+                text = item.title,
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = item.price,
+                style = MaterialTheme.typography.labelSmall
+            )
+
+            item.description?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.labelSmall
+                )
+            }
+        }
+    }
+
+    HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
 }

@@ -3,6 +3,7 @@ package com.haris.restaurantdetails
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.haris.data.MenuSubItem
 import com.haris.data.Result
 import com.haris.restaurantdetails.data.MenuItemEntity
 import com.haris.restaurantdetails.interactors.GetRestaurantDetailsInteractor
@@ -37,19 +38,26 @@ internal class RestaurantDetailsViewModel @Inject constructor(
                 getRestaurantDetailsInteractor(id)
             }
         }
+
+        search()
     }
 
     val state: StateFlow<RestaurantDetailsViewState> =
         combine(
             getRestaurantDetailsInteractor.flow,
             isSearching,
-            termState
-        ) { restaurantDetailsResult, isSearching, term ->
-            val data = restaurantDetailsResult.data
+            termState,
+            searchMenuInteractor.flow
+        ) { restaurantDetailsResult, isSearching, term, searchedMenu ->
+            val data = restaurantDetailsResult.data?.copy(searchedMenu = searchedMenu)
             when (restaurantDetailsResult) {
                 is Result.Success -> {
                     if (data != null) {
-                        RestaurantDetailsViewState.Success(isSearching, term, data)
+                        RestaurantDetailsViewState.Success(
+                            isSearching = isSearching,
+                            term = term,
+                            data = data,
+                        )
                     } else {
                         RestaurantDetailsViewState.Error(
                             message = restaurantDetailsResult.message ?: "",
@@ -77,7 +85,7 @@ internal class RestaurantDetailsViewModel @Inject constructor(
             initialValue = RestaurantDetailsViewState.Empty
         )
 
-    fun search(term: String) {
+    fun search(term: String = "") {
         termState.value = term
         viewModelScope.launch {
             searchMenuInteractor(term)
@@ -103,7 +111,7 @@ internal sealed interface RestaurantDetailsViewState {
     data class Success(
         val isSearching: Boolean,
         val term: String,
-        val data: RestaurantDetailsEntity
+        val data: RestaurantDetailsEntity,
     ) : RestaurantDetailsViewState
 
     data class Error(
@@ -124,5 +132,6 @@ internal data class RestaurantDetailsEntity(
     val numberOfRatings: String,
     val time: String,
     val distance: String,
-    val menuItems: List<MenuItemEntity>
+    val menuItems: List<MenuItemEntity>,
+    val searchedMenu: List<MenuSubItem> = emptyList()
 )
