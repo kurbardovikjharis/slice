@@ -26,7 +26,7 @@ import com.haris.home.ui.Home
 import com.haris.orders.Orders
 import com.haris.restaurantdetails.RestaurantDetails
 import com.haris.rewards.Rewards
-import com.haris.search.Search
+import com.haris.search.ui.Search
 
 internal sealed class Screen(val route: String) {
     data object Home : Screen("home")
