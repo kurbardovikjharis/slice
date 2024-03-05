@@ -48,14 +48,16 @@ private sealed class LeafScreen(
     data object Account : LeafScreen("account")
 
     data object RestaurantDetails : LeafScreen("restaurant_details/{id}") {
-        fun createRoute(root: Screen, id: String?): String {
+        fun createRoute(root: Screen, id: String): String {
             return "${root.route}/restaurant_details/$id"
         }
     }
 
-    data object GroupRestaurants : LeafScreen("group_restaurants/{id}") {
-        fun createRoute(root: Screen, id: String?): String {
-            return "${root.route}/group_restaurants/$id"
+    data object GroupRestaurants : LeafScreen(
+        "group_restaurants/{id}/optional_arguments?name={name}"
+    ) {
+        fun createRoute(root: Screen, id: String, name: String): String {
+            return "${root.route}/group_restaurants/$id/optional_arguments?name=$name"
         }
     }
 }
@@ -149,8 +151,9 @@ private fun NavGraphBuilder.addHome(
         route = LeafScreen.Home.createRoute(root)
     ) {
         Home {
-            val value = it
-            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
+            navController.navigate(
+                LeafScreen.RestaurantDetails.createRoute(root, it)
+            )
         }
     }
 }
@@ -165,12 +168,12 @@ private fun NavGraphBuilder.addSearch(
     ) {
         Search(
             navigate = {
-                val value = it
-                navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
+                navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, it))
             },
-            navigateToGroupRestaurants = {
-                val value = it
-                navController.navigate(LeafScreen.GroupRestaurants.createRoute(root, value))
+            navigateToGroupRestaurants = { id, name ->
+                navController.navigate(
+                    LeafScreen.GroupRestaurants.createRoute(root, id, name)
+                )
             }
         )
     }
@@ -233,13 +236,15 @@ private fun NavGraphBuilder.addGroupRestaurants(
         route = LeafScreen.GroupRestaurants.createRoute(root),
         arguments = listOf(
             navArgument("id") { type = NavType.StringType },
+            navArgument("name") { type = NavType.StringType },
         ),
     ) {
         GroupRestaurants(
             navigateUp = navController::navigateUp
         ) {
-            val value = it
-            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
+            navController.navigate(
+                LeafScreen.RestaurantDetails.createRoute(root, it)
+            )
         }
     }
 }

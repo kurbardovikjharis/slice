@@ -16,6 +16,7 @@ import javax.annotation.concurrent.Immutable
 import javax.inject.Inject
 
 const val ID = "id"
+const val NAME = "name"
 
 @HiltViewModel
 internal class GroupRestaurantsViewModel @Inject constructor(
@@ -24,6 +25,7 @@ internal class GroupRestaurantsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val id: String? = savedStateHandle.get<String>(ID)
+    private val name: String? = savedStateHandle.get<String>(NAME)
 
     init {
         if (id != null) {
@@ -37,14 +39,14 @@ internal class GroupRestaurantsViewModel @Inject constructor(
         when (it) {
             is Result.Success -> {
                 GroupRestaurantsViewState.Success(
-                    title = it.data?.name ?: "",
+                    title = it.data?.name ?: name ?: "",
                     restaurants = it.data?.restaurants ?: emptyList()
                 )
             }
 
             is Result.Loading -> {
                 GroupRestaurantsViewState.Loading(
-                    title = it.data?.name ?: "",
+                    title = it.data?.name ?: name ?: "",
                     restaurants = it.data?.restaurants
                 )
             }
@@ -52,7 +54,7 @@ internal class GroupRestaurantsViewModel @Inject constructor(
             is Result.Error -> {
                 GroupRestaurantsViewState.Error(
                     message = it.message ?: "",
-                    title = it.data?.name ?: "",
+                    title = it.data?.name ?: name ?: "",
                     restaurants = it.data?.restaurants
                 )
             }
