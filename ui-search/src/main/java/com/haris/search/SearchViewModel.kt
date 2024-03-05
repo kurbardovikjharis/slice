@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.haris.data.Group
 import com.haris.data.Restaurant
 import com.haris.data.Result
+import com.haris.domain.interactors.GetStreetNameInteractor
 import com.haris.search.interactors.GetGroupsInteractor
 import com.haris.search.interactors.SearchRestaurantsInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class SensorsViewModel @Inject constructor(
+    getStreetNameInteractor: GetStreetNameInteractor,
     private val getGroupsInteractor: GetGroupsInteractor,
     private val searchRestaurantsInteractor: SearchRestaurantsInteractor
 ) : ViewModel() {
@@ -29,17 +31,22 @@ internal class SensorsViewModel @Inject constructor(
         viewModelScope.launch {
             getGroupsInteractor()
         }
+        viewModelScope.launch {
+            getStreetNameInteractor()
+        }
     }
 
     val state: StateFlow<SensorsViewState> =
         combine(
+            getStreetNameInteractor.flow,
             termState,
             getGroupsInteractor.flow,
             searchRestaurantsInteractor.flow
-        ) { term, groupsResult, searchedRestaurants ->
+        ) { streetName, term, groupsResult, searchedRestaurants ->
             when (groupsResult) {
                 is Result.Success -> {
                     SensorsViewState.Success(
+                        streetName = streetName,
                         term = term,
                         groups = groupsResult.data ?: emptyList(),
                         searchedRestaurants = searchedRestaurants,
@@ -48,6 +55,7 @@ internal class SensorsViewModel @Inject constructor(
 
                 is Result.Loading -> {
                     SensorsViewState.Loading(
+                        streetName = streetName,
                         term = term,
                         groups = groupsResult.data,
                         searchedRestaurants = searchedRestaurants,
@@ -57,6 +65,7 @@ internal class SensorsViewModel @Inject constructor(
                 is Result.Error -> {
                     SensorsViewState.Error(
                         term = term,
+                        streetName = streetName,
                         message = groupsResult.message ?: "",
                         groups = groupsResult.data,
                         searchedRestaurants = searchedRestaurants,
@@ -86,27 +95,32 @@ internal class SensorsViewModel @Inject constructor(
 }
 
 @Immutable
-internal sealed interface SensorsViewState {
+internal sealed class SensorsViewState(
+    open val streetName: String
+) {
 
     data class Success(
+        override val streetName: String,
         val term: String,
         val groups: List<Group>,
         val searchedRestaurants: List<Restaurant>,
-    ) : SensorsViewState
+    ) : SensorsViewState(streetName)
 
     data class Error(
         val message: String,
+        override val streetName: String,
         val term: String,
         val groups: List<Group>?,
         val searchedRestaurants: List<Restaurant>,
-    ) : SensorsViewState
+    ) : SensorsViewState(streetName)
 
     data class Loading(
         val term: String,
+        override val streetName: String,
         val groups: List<Group>?,
         val searchedRestaurants: List<Restaurant>,
-    ) : SensorsViewState
+    ) : SensorsViewState(streetName)
 
-    data object Empty : SensorsViewState
+    data object Empty : SensorsViewState("")
 }
 

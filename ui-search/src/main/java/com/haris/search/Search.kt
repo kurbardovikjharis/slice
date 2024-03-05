@@ -53,7 +53,7 @@ private fun Search(viewModel: SensorsViewModel, navigate: (String) -> Unit) {
     val state = viewModel.state.collectAsState().value
 
     Scaffold(
-        topBar = { SliceTopAppBar() }
+        topBar = { SliceTopAppBar(state.streetName) }
     ) {
         Box(
             modifier = Modifier

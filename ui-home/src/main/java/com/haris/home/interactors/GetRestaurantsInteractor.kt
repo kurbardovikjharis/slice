@@ -3,7 +3,7 @@ package com.haris.home.interactors
 import com.haris.home.repositories.Repository
 import javax.inject.Inject
 
-internal class GetRestaurantsInteractor @Inject constructor(
+class GetRestaurantsInteractor @Inject constructor(
     private val repository: Repository
 ) {
 

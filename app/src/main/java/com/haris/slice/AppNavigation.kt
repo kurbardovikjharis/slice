@@ -70,9 +70,9 @@ internal fun AppNavigation(
     ) {
         addHomeTopLevel(navController)
         addSearchTopLevel(navController)
-        addOrdersTopLevel(navController)
-        addRewardsTopLevel(navController)
-        addAccountTopLevel(navController)
+        addOrdersTopLevel()
+        addRewardsTopLevel()
+        addAccountTopLevel()
     }
 }
 
@@ -103,38 +103,32 @@ private fun NavGraphBuilder.addSearchTopLevel(
 }
 
 @ExperimentalAnimationApi
-private fun NavGraphBuilder.addOrdersTopLevel(
-    navController: NavController
-) {
+private fun NavGraphBuilder.addOrdersTopLevel() {
     navigation(
         route = Screen.Orders.route,
         startDestination = LeafScreen.Orders.createRoute(Screen.Orders),
     ) {
-        addOrders(navController, Screen.Orders)
+        addOrders(Screen.Orders)
     }
 }
 
 @ExperimentalAnimationApi
-private fun NavGraphBuilder.addRewardsTopLevel(
-    navController: NavController
-) {
+private fun NavGraphBuilder.addRewardsTopLevel() {
     navigation(
         route = Screen.Rewards.route,
         startDestination = LeafScreen.Rewards.createRoute(Screen.Rewards),
     ) {
-        addRewards(navController, Screen.Rewards)
+        addRewards(Screen.Rewards)
     }
 }
 
 @ExperimentalAnimationApi
-private fun NavGraphBuilder.addAccountTopLevel(
-    navController: NavController
-) {
+private fun NavGraphBuilder.addAccountTopLevel() {
     navigation(
         route = Screen.Account.route,
         startDestination = LeafScreen.Account.createRoute(Screen.Account),
     ) {
-        addAccount(navController, Screen.Account)
+        addAccount(Screen.Account)
     }
 }
 
@@ -170,7 +164,6 @@ private fun NavGraphBuilder.addSearch(
 
 @ExperimentalAnimationApi
 private fun NavGraphBuilder.addOrders(
-    navController: NavController,
     root: Screen,
 ) {
     composable(
@@ -182,7 +175,6 @@ private fun NavGraphBuilder.addOrders(
 
 @ExperimentalAnimationApi
 private fun NavGraphBuilder.addRewards(
-    navController: NavController,
     root: Screen,
 ) {
     composable(
@@ -194,7 +186,6 @@ private fun NavGraphBuilder.addRewards(
 
 @ExperimentalAnimationApi
 private fun NavGraphBuilder.addAccount(
-    navController: NavController,
     root: Screen,
 ) {
     composable(

@@ -43,6 +43,7 @@ android {
 dependencies {
     implementation(project(":compose"))
     implementation(project(":data"))
+    implementation(project(":domain"))
     implementation(project(":resources"))
 
     implementation(libs.androidx.core.ktx)

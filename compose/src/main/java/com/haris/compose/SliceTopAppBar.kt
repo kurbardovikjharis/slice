@@ -12,7 +12,7 @@ import com.haris.resources.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SliceTopAppBar() {
+fun SliceTopAppBar(street: String) {
     TopAppBar(
         title = {
             Column {
@@ -21,7 +21,7 @@ fun SliceTopAppBar() {
                     style = MaterialTheme.typography.titleMedium
                 )
                 Text(
-                    text = "13th St",
+                    text = street,
                     style = MaterialTheme.typography.titleMedium
                 )
             }

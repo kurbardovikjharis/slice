@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.haris.search"
+    namespace = "com.haris.domain"
     compileSdk = 34
 
     defaultConfig {
@@ -41,10 +41,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":compose"))
     implementation(project(":data"))
-    implementation(project(":domain"))
-    implementation(project(":resources"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtimeCompose)
