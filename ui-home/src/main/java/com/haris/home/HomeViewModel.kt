@@ -16,7 +16,7 @@ import javax.annotation.concurrent.Immutable
 import javax.inject.Inject
 
 @HiltViewModel
-internal class SensorsViewModel @Inject constructor(
+internal class HomeViewModel @Inject constructor(
     getStreetNameInteractor: GetStreetNameInteractor,
     private val getRestaurantsInteractor: GetRestaurantsInteractor,
 ) : ViewModel() {

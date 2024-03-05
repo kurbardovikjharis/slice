@@ -1,4 +1,4 @@
-package com.haris.home
+package com.haris.grouprestaurants
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,10 +17,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -34,21 +37,46 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.haris.compose.SliceTopAppBar
 import com.haris.data.Restaurant
 import com.haris.resources.R
 
 @Composable
-fun Home(navigate: (String) -> Unit) {
-    Home(viewModel = hiltViewModel(), navigate = navigate)
+fun GroupRestaurants(
+    navigateUp: () -> Unit,
+    navigateToRestaurantDetails: (String) -> Unit
+) {
+    GroupRestaurants(
+        viewModel = hiltViewModel(),
+        navigateUp = navigateUp,
+        navigateToRestaurantDetails = navigateToRestaurantDetails
+    )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Home(viewModel: HomeViewModel, navigate: (String) -> Unit) {
+private fun GroupRestaurants(
+    viewModel: GroupRestaurantsViewModel,
+    navigateUp: () -> Unit,
+    navigateToRestaurantDetails: (String) -> Unit
+) {
     val state = viewModel.state.collectAsState().value
 
     Scaffold(
-        topBar = { SliceTopAppBar(state.streetName) }
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(id = R.string.restaurant_details))
+                },
+                navigationIcon = {
+                    IconButton(onClick = navigateUp) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.baseline_arrow_back_24),
+                            contentDescription = stringResource(id = R.string.back)
+                        )
+                    }
+                },
+            )
+        }
     ) {
         Box(
             modifier = Modifier
@@ -57,42 +85,53 @@ private fun Home(viewModel: HomeViewModel, navigate: (String) -> Unit) {
         ) {
             HandleState(
                 state = state,
-                navigate = navigate,
-                retry = { viewModel.retry() }
+                retry = { viewModel.retry() },
+                navigate = navigateToRestaurantDetails
             )
         }
     }
 }
 
 @Composable
-internal fun HandleState(state: HomeViewState, navigate: (String) -> Unit, retry: () -> Unit) {
+internal fun HandleState(
+    state: GroupRestaurantsViewState,
+    retry: () -> Unit,
+    navigate: (String) -> Unit
+) {
     when (state) {
-        is HomeViewState.Success -> {
-            Success(state = state, navigate = navigate)
+        is GroupRestaurantsViewState.Success -> {
+            Success(state, navigate)
         }
 
-        is HomeViewState.Error -> {
-            Error(state = state, navigate = navigate, retry = retry)
+        is GroupRestaurantsViewState.Error -> {
+            Error(
+                state = state,
+                retry = retry,
+                navigate = navigate
+            )
         }
 
-        is HomeViewState.Loading -> {
-            Loading(state = state, navigate = navigate)
+        is GroupRestaurantsViewState.Loading -> {
+            Loading(state, navigate)
         }
 
-        is HomeViewState.Empty -> {}
+        is GroupRestaurantsViewState.Empty -> {}
     }
 }
 
 @Composable
-private fun Success(state: HomeViewState.Success, navigate: (String) -> Unit) {
-    Restaurants(state.restaurants, navigate)
+private fun Success(
+    state: GroupRestaurantsViewState.Success,
+    navigate: (String) -> Unit
+) {
+    Content(state.restaurants, navigate)
 }
 
 @Composable
 private fun Error(
-    state: HomeViewState.Error,
-    navigate: (String) -> Unit,
-    retry: () -> Unit
+    state: GroupRestaurantsViewState.Error,
+    retry: () -> Unit,
+    navigate: (String) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -100,7 +139,7 @@ private fun Error(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (state.restaurants != null) {
-            Restaurants(state.restaurants, navigate)
+            Content(state.restaurants, navigate)
         } else {
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -117,7 +156,7 @@ private fun Error(
 
 @Composable
 private fun Loading(
-    state: HomeViewState.Loading,
+    state: GroupRestaurantsViewState.Loading,
     navigate: (String) -> Unit
 ) {
     Column(
@@ -126,7 +165,7 @@ private fun Loading(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         if (state.restaurants != null) {
-            Restaurants(state.restaurants, navigate)
+            Content(state.restaurants, navigate)
         } else {
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -140,7 +179,10 @@ private fun Loading(
 }
 
 @Composable
-private fun Restaurants(sensors: List<Restaurant>, navigate: (String) -> Unit) {
+private fun Content(
+    data: List<Restaurant>,
+    navigate: (String) -> Unit
+) {
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -148,7 +190,7 @@ private fun Restaurants(sensors: List<Restaurant>, navigate: (String) -> Unit) {
         item {
             Spacer(modifier = Modifier.height(16.dp))
         }
-        items(items = sensors, key = { it.id }) {
+        items(items = data, key = { it.id }) {
             Item(item = it, navigate = navigate)
         }
     }
