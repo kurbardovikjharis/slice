@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.haris.account.Account
+import com.haris.grouprestaurants.GroupRestaurants
 import com.haris.home.Home
 import com.haris.orders.Orders
 import com.haris.restaurantdetails.RestaurantDetails
@@ -49,6 +50,12 @@ private sealed class LeafScreen(
     data object RestaurantDetails : LeafScreen("restaurant_details/{id}") {
         fun createRoute(root: Screen, id: String?): String {
             return "${root.route}/restaurant_details/$id"
+        }
+    }
+
+    data object GroupRestaurants : LeafScreen("group_restaurants/{id}") {
+        fun createRoute(root: Screen, id: String?): String {
+            return "${root.route}/group_restaurants/$id"
         }
     }
 }
@@ -99,6 +106,7 @@ private fun NavGraphBuilder.addSearchTopLevel(
     ) {
         addSearch(navController, Screen.Search)
         addRestaurantDetails(navController, Screen.Search)
+        addGroupRestaurants(navController, Screen.Search)
     }
 }
 
@@ -155,10 +163,16 @@ private fun NavGraphBuilder.addSearch(
     composable(
         route = LeafScreen.Search.createRoute(root)
     ) {
-        Search {
-            val value = it
-            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
-        }
+        Search(
+            navigate = {
+                val value = it
+                navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
+            },
+            navigateToGroupRestaurants = {
+                val value = it
+                navController.navigate(LeafScreen.GroupRestaurants.createRoute(root, value))
+            }
+        )
     }
 }
 
@@ -207,6 +221,26 @@ private fun NavGraphBuilder.addRestaurantDetails(
         ),
     ) {
         RestaurantDetails(navController::navigateUp)
+    }
+}
+
+@ExperimentalAnimationApi
+private fun NavGraphBuilder.addGroupRestaurants(
+    navController: NavController,
+    root: Screen
+) {
+    composable(
+        route = LeafScreen.GroupRestaurants.createRoute(root),
+        arguments = listOf(
+            navArgument("id") { type = NavType.StringType },
+        ),
+    ) {
+        GroupRestaurants(
+            navigateUp = navController::navigateUp
+        ) {
+            val value = it
+            navController.navigate(LeafScreen.GroupRestaurants.createRoute(root, value))
+        }
     }
 }
 

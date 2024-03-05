@@ -24,6 +24,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -44,12 +45,23 @@ import com.haris.data.Restaurant
 import com.haris.resources.R
 
 @Composable
-fun Search(navigate: (String) -> Unit) {
-    Search(viewModel = hiltViewModel(), navigate = navigate)
+fun Search(
+    navigate: (String) -> Unit,
+    navigateToGroupRestaurants: (String) -> Unit
+) {
+    Search(
+        viewModel = hiltViewModel(),
+        navigate = navigate,
+        navigateToGroupRestaurants = navigateToGroupRestaurants
+    )
 }
 
 @Composable
-private fun Search(viewModel: SensorsViewModel, navigate: (String) -> Unit) {
+private fun Search(
+    viewModel: SensorsViewModel,
+    navigate: (String) -> Unit,
+    navigateToGroupRestaurants: (String) -> Unit
+) {
     val state = viewModel.state.collectAsState().value
 
     Scaffold(
@@ -64,7 +76,8 @@ private fun Search(viewModel: SensorsViewModel, navigate: (String) -> Unit) {
                 state = state,
                 onTermChanged = { term -> viewModel.search(term) },
                 navigate = navigate,
-                retry = { viewModel.retry() }
+                retry = { viewModel.retry() },
+                navigateToGroupRestaurants = navigateToGroupRestaurants
             )
         }
     }
@@ -75,19 +88,36 @@ internal fun HandleState(
     state: SensorsViewState,
     onTermChanged: (String) -> Unit,
     navigate: (String) -> Unit,
+    navigateToGroupRestaurants: (String) -> Unit,
     retry: () -> Unit
 ) {
     when (state) {
         is SensorsViewState.Success -> {
-            Success(state = state, onTermChanged = onTermChanged, navigate = navigate)
+            Success(
+                state = state,
+                onTermChanged = onTermChanged,
+                navigate = navigate,
+                navigateToGroupRestaurants = navigateToGroupRestaurants
+            )
         }
 
         is SensorsViewState.Error -> {
-            Error(state = state, onTermChanged = onTermChanged, navigate = navigate, retry = retry)
+            Error(
+                state = state,
+                onTermChanged = onTermChanged,
+                navigate = navigate,
+                navigateToGroupRestaurants = navigateToGroupRestaurants,
+                retry = retry
+            )
         }
 
         is SensorsViewState.Loading -> {
-            Loading(state = state, onTermChanged = onTermChanged, navigate = navigate)
+            Loading(
+                state = state,
+                onTermChanged = onTermChanged,
+                navigate = navigate,
+                navigateToGroupRestaurants = navigateToGroupRestaurants
+            )
         }
 
         is SensorsViewState.Empty -> {}
@@ -98,7 +128,8 @@ internal fun HandleState(
 private fun Success(
     state: SensorsViewState.Success,
     onTermChanged: (String) -> Unit,
-    navigate: (String) -> Unit
+    navigate: (String) -> Unit,
+    navigateToGroupRestaurants: (String) -> Unit
 ) {
     Groups(
         term = state.term,
@@ -106,6 +137,7 @@ private fun Success(
         searchedRestaurants = state.searchedRestaurants,
         onTermChanged = onTermChanged,
         navigate = navigate,
+        navigateToGroupRestaurants = navigateToGroupRestaurants,
     )
 }
 
@@ -114,6 +146,7 @@ private fun Error(
     state: SensorsViewState.Error,
     onTermChanged: (String) -> Unit,
     navigate: (String) -> Unit,
+    navigateToGroupRestaurants: (String) -> Unit,
     retry: () -> Unit
 ) {
     Column(
@@ -127,7 +160,8 @@ private fun Error(
                 groups = state.groups,
                 searchedRestaurants = state.searchedRestaurants,
                 onTermChanged = onTermChanged,
-                navigate = navigate
+                navigate = navigate,
+                navigateToGroupRestaurants = navigateToGroupRestaurants
             )
         } else {
             Spacer(modifier = Modifier.height(32.dp))
@@ -147,7 +181,8 @@ private fun Error(
 private fun Loading(
     state: SensorsViewState.Loading,
     onTermChanged: (String) -> Unit,
-    navigate: (String) -> Unit
+    navigate: (String) -> Unit,
+    navigateToGroupRestaurants: (String) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -160,7 +195,8 @@ private fun Loading(
                 groups = state.groups,
                 searchedRestaurants = state.searchedRestaurants,
                 onTermChanged = onTermChanged,
-                navigate = navigate
+                navigate = navigate,
+                navigateToGroupRestaurants = navigateToGroupRestaurants
             )
         } else {
             Spacer(modifier = Modifier.height(32.dp))
@@ -180,7 +216,8 @@ private fun Groups(
     groups: List<Group>,
     searchedRestaurants: List<Restaurant>,
     onTermChanged: (String) -> Unit,
-    navigate: (String) -> Unit
+    navigate: (String) -> Unit,
+    navigateToGroupRestaurants: (String) -> Unit
 ) {
     LazyColumn(
         contentPadding = PaddingValues(vertical = 16.dp),
@@ -221,7 +258,11 @@ private fun Groups(
         }
         if (term.isEmpty()) {
             items(items = groups, key = { it.id }) {
-                Group(item = it, navigate = navigate)
+                Group(
+                    item = it,
+                    navigate = navigate,
+                    navigateToGroupRestaurants = navigateToGroupRestaurants
+                )
             }
         } else {
             items(items = searchedRestaurants, key = { it.id }) {
@@ -232,7 +273,11 @@ private fun Groups(
 }
 
 @Composable
-private fun Group(item: Group, navigate: (String) -> Unit) {
+private fun Group(
+    item: Group,
+    navigate: (String) -> Unit,
+    navigateToGroupRestaurants: (String) -> Unit
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -247,10 +292,12 @@ private fun Group(item: Group, navigate: (String) -> Unit) {
                 text = item.name,
                 style = MaterialTheme.typography.titleLarge
             )
-            Text(
-                text = stringResource(id = R.string.view_all),
-                style = MaterialTheme.typography.titleSmall
-            )
+            TextButton(onClick = { navigateToGroupRestaurants(item.id) }) {
+                Text(
+                    text = stringResource(id = R.string.view_all),
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
         }
         LazyRow(
             contentPadding = PaddingValues(horizontal = 16.dp),
@@ -328,7 +375,10 @@ private fun Restaurant(item: Restaurant, navigate: (String) -> Unit) {
 }
 
 @Composable
-private fun SearchedRestaurant(item: Restaurant, navigate: (String) -> Unit) {
+private fun SearchedRestaurant(
+    item: Restaurant,
+    navigate: (String) -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

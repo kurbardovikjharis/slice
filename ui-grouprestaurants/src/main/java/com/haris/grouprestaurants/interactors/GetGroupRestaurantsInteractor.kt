@@ -1,8 +1,9 @@
 package com.haris.grouprestaurants.interactors
 
 import com.haris.grouprestaurants.repositories.Repository
+import javax.inject.Inject
 
-class GetGroupRestaurantsInteractor(
+class GetGroupRestaurantsInteractor @Inject constructor(
     private val repository: Repository
 ) {
 

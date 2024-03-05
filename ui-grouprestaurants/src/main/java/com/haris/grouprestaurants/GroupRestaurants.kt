@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -65,7 +66,7 @@ private fun GroupRestaurants(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = R.string.restaurant_details))
+                    Text(text = state.title)
                 },
                 navigationIcon = {
                     IconButton(onClick = navigateUp) {
@@ -75,6 +76,9 @@ private fun GroupRestaurants(
                         )
                     }
                 },
+                colors = TopAppBarDefaults.topAppBarColors().copy(
+                    containerColor = TopAppBarDefaults.largeTopAppBarColors().scrolledContainerColor
+                )
             )
         }
     ) {

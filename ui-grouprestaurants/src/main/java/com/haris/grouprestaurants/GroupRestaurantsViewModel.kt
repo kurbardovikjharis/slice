@@ -37,20 +37,23 @@ internal class GroupRestaurantsViewModel @Inject constructor(
         when (it) {
             is Result.Success -> {
                 GroupRestaurantsViewState.Success(
-                    restaurants = it.data ?: emptyList()
+                    title = it.data?.name ?: "",
+                    restaurants = it.data?.restaurants ?: emptyList()
                 )
             }
 
             is Result.Loading -> {
                 GroupRestaurantsViewState.Loading(
-                    restaurants = it.data
+                    title = it.data?.name ?: "",
+                    restaurants = it.data?.restaurants
                 )
             }
 
             is Result.Error -> {
                 GroupRestaurantsViewState.Error(
                     message = it.message ?: "",
-                    restaurants = it.data
+                    title = it.data?.name ?: "",
+                    restaurants = it.data?.restaurants
                 )
             }
 
@@ -72,21 +75,26 @@ internal class GroupRestaurantsViewModel @Inject constructor(
 }
 
 @Immutable
-internal sealed interface GroupRestaurantsViewState {
+internal sealed class GroupRestaurantsViewState(
+    open val title: String = ""
+) {
 
     data class Success(
+        override val title: String,
         val restaurants: List<Restaurant>
-    ) : GroupRestaurantsViewState
+    ) : GroupRestaurantsViewState(title)
 
     data class Error(
         val message: String,
+        override val title: String,
         val restaurants: List<Restaurant>?
-    ) : GroupRestaurantsViewState
+    ) : GroupRestaurantsViewState(title)
 
     data class Loading(
+        override val title: String,
         val restaurants: List<Restaurant>?
-    ) : GroupRestaurantsViewState
+    ) : GroupRestaurantsViewState(title)
 
-    data object Empty : GroupRestaurantsViewState
+    data object Empty : GroupRestaurantsViewState()
 }
 

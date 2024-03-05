@@ -1,6 +1,6 @@
 package com.haris.grouprestaurants.repositories
 
-import com.haris.data.Restaurant
+import com.haris.data.Group
 import com.haris.data.Result
 import com.haris.grouprestaurants.datasource.LocalDataSource
 import kotlinx.coroutines.flow.Flow
@@ -12,10 +12,10 @@ class RepositoryImpl @Inject constructor(
     private val dataSource: LocalDataSource
 ) : Repository {
 
-    private val _data: MutableStateFlow<Result<List<Restaurant>>> =
+    private val _data: MutableStateFlow<Result<Group>> =
         MutableStateFlow(Result.None())
 
-    override val data: Flow<Result<List<Restaurant>>>
+    override val data: Flow<Result<Group>>
         get() = _data
 
     override suspend fun getData(id: String) {

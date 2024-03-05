@@ -54,6 +54,7 @@ android {
 dependencies {
     implementation(project(":resources"))
     implementation(project(":ui-account"))
+    implementation(project(":ui-grouprestaurants"))
     implementation(project(":ui-home"))
     implementation(project(":ui-orders"))
     implementation(project(":ui-rewards"))
