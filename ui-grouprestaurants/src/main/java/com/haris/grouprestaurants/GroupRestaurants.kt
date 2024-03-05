@@ -211,48 +211,58 @@ private fun Item(item: Restaurant, navigate: (String) -> Unit) {
             modifier = Modifier.padding(bottom = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            AsyncImage(
-                model = item.url,
-                contentDescription = stringResource(id = R.string.restaurant),
-                modifier =
-                Modifier
-                    .height(250.dp)
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
-            )
-            Text(
-                text = item.name,
-                modifier = Modifier.padding(horizontal = 8.dp),
-                style = MaterialTheme.typography.titleSmall
-            )
+            Box {
+                AsyncImage(
+                    model = item.url,
+                    contentDescription = stringResource(id = R.string.restaurant),
+                    modifier = Modifier
+                        .height(150.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
+                )
+                Column(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.BottomStart),
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        text = item.name,
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.background
+                    )
+                    Row(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.outline_kid_star_24),
+                            contentDescription = stringResource(id = R.string.star),
+                            tint = Color.Unspecified,
+                        )
+                        Text(
+                            text = item.rating,
+                            modifier = Modifier.padding(horizontal = 4.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.background
+                        )
+                    }
+                }
+            }
             Row(
                 modifier = Modifier.padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.outline_kid_star_24),
+                    painter = painterResource(R.drawable.baseline_access_time_filled_24),
                     contentDescription = stringResource(id = R.string.star),
-                    tint = Color.Unspecified,
-                )
-                Text(
-                    text = item.rating,
-                    modifier = Modifier.padding(horizontal = 4.dp),
-                    style = MaterialTheme.typography.labelSmall
-                )
-                Icon(
-                    painter = painterResource(R.drawable.baseline_album_4),
-                    contentDescription = stringResource(id = R.string.separator),
                     tint = Color.Unspecified,
                 )
                 Text(
                     text = item.time,
                     modifier = Modifier.padding(horizontal = 4.dp),
                     style = MaterialTheme.typography.labelSmall
-                )
-                Icon(
-                    painter = painterResource(R.drawable.baseline_album_4),
-                    contentDescription = stringResource(id = R.string.separator),
-                    tint = Color.Unspecified,
                 )
                 Text(
                     text = item.distance,

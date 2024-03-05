@@ -239,7 +239,7 @@ private fun NavGraphBuilder.addGroupRestaurants(
             navigateUp = navController::navigateUp
         ) {
             val value = it
-            navController.navigate(LeafScreen.GroupRestaurants.createRoute(root, value))
+            navController.navigate(LeafScreen.RestaurantDetails.createRoute(root, value))
         }
     }
 }
