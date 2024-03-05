@@ -65,32 +65,32 @@ private fun Home(viewModel: SensorsViewModel, navigate: (String) -> Unit) {
 }
 
 @Composable
-internal fun HandleState(state: SensorsViewState, navigate: (String) -> Unit, retry: () -> Unit) {
+internal fun HandleState(state: HomeViewState, navigate: (String) -> Unit, retry: () -> Unit) {
     when (state) {
-        is SensorsViewState.Success -> {
+        is HomeViewState.Success -> {
             Success(state = state, navigate = navigate)
         }
 
-        is SensorsViewState.Error -> {
+        is HomeViewState.Error -> {
             Error(state = state, navigate = navigate, retry = retry)
         }
 
-        is SensorsViewState.Loading -> {
+        is HomeViewState.Loading -> {
             Loading(state = state, navigate = navigate)
         }
 
-        is SensorsViewState.Empty -> {}
+        is HomeViewState.Empty -> {}
     }
 }
 
 @Composable
-private fun Success(state: SensorsViewState.Success, navigate: (String) -> Unit) {
+private fun Success(state: HomeViewState.Success, navigate: (String) -> Unit) {
     Restaurants(state.restaurants, navigate)
 }
 
 @Composable
 private fun Error(
-    state: SensorsViewState.Error,
+    state: HomeViewState.Error,
     navigate: (String) -> Unit,
     retry: () -> Unit
 ) {
@@ -117,7 +117,7 @@ private fun Error(
 
 @Composable
 private fun Loading(
-    state: SensorsViewState.Loading,
+    state: HomeViewState.Loading,
     navigate: (String) -> Unit
 ) {
     Column(

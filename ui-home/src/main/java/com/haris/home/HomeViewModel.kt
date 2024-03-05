@@ -30,40 +30,40 @@ internal class SensorsViewModel @Inject constructor(
         }
     }
 
-    val state: StateFlow<SensorsViewState> =
+    val state: StateFlow<HomeViewState> =
         combine(
             getStreetNameInteractor.flow,
             getRestaurantsInteractor.flow
         ) { streetName, restaurantResult ->
             when (restaurantResult) {
                 is Result.Success -> {
-                    SensorsViewState.Success(
+                    HomeViewState.Success(
                         streetName = streetName,
                         restaurants = restaurantResult.data ?: emptyList()
                     )
                 }
 
                 is Result.Loading -> {
-                    SensorsViewState.Loading(
+                    HomeViewState.Loading(
                         streetName = streetName,
                         restaurants = restaurantResult.data
                     )
                 }
 
                 is Result.Error -> {
-                    SensorsViewState.Error(
+                    HomeViewState.Error(
                         message = restaurantResult.message ?: "",
                         streetName = streetName,
                         restaurants = restaurantResult.data
                     )
                 }
 
-                is Result.None -> SensorsViewState.Empty
+                is Result.None -> HomeViewState.Empty
             }
         }.stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(),
-            initialValue = SensorsViewState.Empty
+            initialValue = HomeViewState.Empty
         )
 
     fun retry() {
@@ -74,26 +74,26 @@ internal class SensorsViewModel @Inject constructor(
 }
 
 @Immutable
-internal sealed class SensorsViewState(
+internal sealed class HomeViewState(
     open val streetName: String
 ) {
 
     data class Success(
         override val streetName: String,
         val restaurants: List<Restaurant>
-    ) : SensorsViewState(streetName)
+    ) : HomeViewState(streetName)
 
     data class Error(
         val message: String,
         override val streetName: String,
         val restaurants: List<Restaurant>?
-    ) : SensorsViewState(streetName)
+    ) : HomeViewState(streetName)
 
     data class Loading(
         override val streetName: String,
         val restaurants: List<Restaurant>?
-    ) : SensorsViewState(streetName)
+    ) : HomeViewState(streetName)
 
-    data object Empty : SensorsViewState("")
+    data object Empty : HomeViewState("")
 }
 
