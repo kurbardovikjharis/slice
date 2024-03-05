@@ -22,7 +22,7 @@ import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.haris.account.Account
 import com.haris.grouprestaurants.GroupRestaurants
-import com.haris.home.Home
+import com.haris.home.ui.Home
 import com.haris.orders.Orders
 import com.haris.restaurantdetails.RestaurantDetails
 import com.haris.rewards.Rewards
