@@ -4,9 +4,18 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.exclude
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Check
@@ -15,10 +24,14 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.ShoppingCart
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -30,8 +43,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -43,31 +58,73 @@ import com.haris.resources.R
 fun Main() {
     val navController = rememberNavController()
 
+    val configuration = LocalConfiguration.current
+    val useBottomNavigation = configuration.screenWidthDp < 600
+
     Scaffold(
         bottomBar = {
-            val currentSelectedItem by navController.currentScreenAsState()
-            HomeNavigationBar(
-                selectedNavigation = currentSelectedItem,
-                onNavigationSelected = { selected ->
-                    navController.navigate(selected.route) {
-                        launchSingleTop = true
-                        restoreState = true
+            if (useBottomNavigation) {
+                val currentSelectedItem by navController.currentScreenAsState()
+                HomeNavigationBar(
+                    selectedNavigation = currentSelectedItem,
+                    onNavigationSelected = { selected ->
+                        navController.navigate(selected.route) {
+                            launchSingleTop = true
+                            restoreState = true
 
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
                         }
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            } else {
+                Spacer(
+                    Modifier
+                        .windowInsetsBottomHeight(WindowInsets.navigationBars)
+                        .fillMaxWidth(),
+                )
+            }
+        },
+        contentWindowInsets = ScaffoldDefaults.contentWindowInsets
+            .exclude(WindowInsets.statusBars), // We let content handle the status bar
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it),
+        ) {
+            if (!useBottomNavigation) {
+                val currentSelectedItem by navController.currentScreenAsState()
+                HomeNavigationRail(
+                    selectedNavigation = currentSelectedItem,
+                    onNavigationSelected = { selected ->
+                        navController.navigate(selected.route) {
+                            launchSingleTop = true
+                            restoreState = true
+
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                        }
+                    },
+                    modifier = Modifier.fillMaxHeight(),
+                )
+
+                HorizontalDivider(
+                    Modifier
+                        .fillMaxHeight()
+                        .width(1.dp)
+                )
+            }
+            AppNavigation(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(),
+                navController = navController,
             )
         }
-    ) {
-        AppNavigation(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(it),
-            navController = navController,
-        )
     }
 }
 
@@ -86,6 +143,30 @@ internal fun HomeNavigationBar(
                         selected = selectedNavigation == item.screen,
                     )
                 },
+                label = { Text(text = stringResource(item.labelResId)) },
+                selected = selectedNavigation == item.screen,
+                onClick = { onNavigationSelected(item.screen) },
+            )
+        }
+    }
+}
+
+@Composable
+internal fun HomeNavigationRail(
+    selectedNavigation: Screen,
+    onNavigationSelected: (Screen) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    NavigationRail(modifier = modifier.padding(vertical = 16.dp)) {
+        for (item in HomeNavigationItems) {
+            NavigationRailItem(
+                icon = {
+                    HomeNavigationItemIcon(
+                        item = item,
+                        selected = selectedNavigation == item.screen,
+                    )
+                },
+                alwaysShowLabel = false,
                 label = { Text(text = stringResource(item.labelResId)) },
                 selected = selectedNavigation == item.screen,
                 onClick = { onNavigationSelected(item.screen) },
