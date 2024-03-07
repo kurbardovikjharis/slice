@@ -38,8 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.haris.compose.SliceTopAppBar
-import com.haris.data.Group
-import com.haris.data.Restaurant
+import com.haris.data.entities.Group
+import com.haris.data.entities.Restaurant
 import com.haris.resources.R
 import com.haris.search.SensorsViewModel
 import com.haris.search.SensorsViewState

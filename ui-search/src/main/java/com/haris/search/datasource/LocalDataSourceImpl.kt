@@ -1,7 +1,7 @@
 package com.haris.search.datasource
 
-import com.haris.data.Group
-import com.haris.data.Restaurant
+import com.haris.data.entities.Group
+import com.haris.data.entities.Restaurant
 import com.haris.data.groups
 import com.haris.data.restaurants
 import kotlinx.coroutines.Dispatchers

@@ -1,6 +1,6 @@
 package com.haris.home.datasource
 
-import com.haris.data.Restaurant
+import com.haris.data.entities.Restaurant
 import com.haris.data.restaurants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

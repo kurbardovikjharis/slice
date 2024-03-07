@@ -2,9 +2,9 @@ package com.haris.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.haris.data.Group
-import com.haris.data.Restaurant
-import com.haris.data.Result
+import com.haris.data.entities.Group
+import com.haris.data.entities.Restaurant
+import com.haris.data.entities.Result
 import com.haris.domain.interactors.GetStreetNameInteractor
 import com.haris.search.interactors.GetGroupsInteractor
 import com.haris.search.interactors.SearchRestaurantsInteractor

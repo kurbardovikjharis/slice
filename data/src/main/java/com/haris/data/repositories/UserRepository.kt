@@ -1,4 +1,4 @@
-package com.haris.domain.repositories
+package com.haris.data.repositories
 
 import kotlinx.coroutines.flow.Flow
 

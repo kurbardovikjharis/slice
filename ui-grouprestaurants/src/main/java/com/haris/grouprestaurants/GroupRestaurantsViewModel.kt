@@ -3,8 +3,8 @@ package com.haris.grouprestaurants
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.haris.data.Restaurant
-import com.haris.data.Result
+import com.haris.data.entities.Restaurant
+import com.haris.data.entities.Result
 import com.haris.grouprestaurants.interactors.GetGroupRestaurantsInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted

@@ -1,4 +1,4 @@
-package com.haris.data
+package com.haris.data.entities
 
 sealed class Result<T>(
     val data: T? = null,

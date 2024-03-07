@@ -44,7 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.haris.data.MenuSubItem
+import com.haris.data.entities.MenuSubItem
 import com.haris.resources.R
 import com.haris.restaurantdetails.data.MenuItemEntity
 import kotlinx.coroutines.launch

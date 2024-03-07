@@ -35,7 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.haris.data.Restaurant
+import com.haris.data.entities.Restaurant
 import com.haris.grouprestaurants.GroupRestaurantsViewModel
 import com.haris.grouprestaurants.GroupRestaurantsViewState
 import com.haris.resources.R

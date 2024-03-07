@@ -1,5 +1,11 @@
 package com.haris.data
 
+import com.haris.data.entities.Group
+import com.haris.data.entities.MenuItem
+import com.haris.data.entities.MenuSubItem
+import com.haris.data.entities.Restaurant
+import com.haris.data.entities.RestaurantDetails
+
 val restaurant1 = Restaurant(
     id = "1",
     name = "Buckeye Pizza Express",

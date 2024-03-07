@@ -1,6 +1,6 @@
 package com.haris.grouprestaurants.datasource
 
-import com.haris.data.Group
+import com.haris.data.entities.Group
 
 interface LocalDataSource {
 

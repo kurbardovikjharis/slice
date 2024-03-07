@@ -1,7 +1,7 @@
-package com.haris.domain.di
+package com.haris.data.repositories
 
-import com.haris.domain.repositories.UserRepository
-import com.haris.domain.repositories.UserRepositoryImpl
+import com.haris.data.repositories.UserRepository
+import com.haris.data.repositories.UserRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

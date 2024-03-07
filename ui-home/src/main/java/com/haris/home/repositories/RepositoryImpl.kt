@@ -1,7 +1,7 @@
 package com.haris.home.repositories
 
-import com.haris.data.Restaurant
-import com.haris.data.Result
+import com.haris.data.entities.Restaurant
+import com.haris.data.entities.Result
 import com.haris.home.datasource.LocalDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

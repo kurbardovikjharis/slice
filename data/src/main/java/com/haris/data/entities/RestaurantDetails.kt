@@ -1,6 +1,8 @@
-package com.haris.data
+package com.haris.data.entities
 
-data class Restaurant(
+import com.haris.data.entities.MenuItem
+
+data class RestaurantDetails(
     val id: String,
     val name: String,
     val url: String,
@@ -8,4 +10,5 @@ data class Restaurant(
     val numberOfRatings: String,
     val time: String,
     val distance: String,
+    val menuItems: List<MenuItem>
 )

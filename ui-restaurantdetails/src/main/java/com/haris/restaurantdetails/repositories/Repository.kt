@@ -1,7 +1,7 @@
 package com.haris.restaurantdetails.repositories
 
-import com.haris.data.MenuSubItem
-import com.haris.data.Result
+import com.haris.data.entities.MenuSubItem
+import com.haris.data.entities.Result
 import com.haris.restaurantdetails.RestaurantDetailsEntity
 import kotlinx.coroutines.flow.Flow
 

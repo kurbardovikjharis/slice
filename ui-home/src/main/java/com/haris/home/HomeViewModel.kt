@@ -2,8 +2,8 @@ package com.haris.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.haris.data.Restaurant
-import com.haris.data.Result
+import com.haris.data.entities.Restaurant
+import com.haris.data.entities.Result
 import com.haris.domain.interactors.GetStreetNameInteractor
 import com.haris.home.interactors.GetRestaurantsInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -75,7 +75,7 @@ internal class HomeViewModel @Inject constructor(
 
 @Immutable
 internal sealed class HomeViewState(
-    open val streetName: String
+    open val streetName: String = ""
 ) {
 
     data class Success(
@@ -94,6 +94,6 @@ internal sealed class HomeViewState(
         val restaurants: List<Restaurant>?
     ) : HomeViewState(streetName)
 
-    data object Empty : HomeViewState("")
+    data object Empty : HomeViewState()
 }
 

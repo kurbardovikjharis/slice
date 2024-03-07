@@ -3,8 +3,8 @@ package com.haris.restaurantdetails
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.haris.data.MenuSubItem
-import com.haris.data.Result
+import com.haris.data.entities.MenuSubItem
+import com.haris.data.entities.Result
 import com.haris.restaurantdetails.data.MenuItemEntity
 import com.haris.restaurantdetails.interactors.GetRestaurantDetailsInteractor
 import com.haris.restaurantdetails.interactors.SearchMenuInteractor

@@ -1,7 +1,7 @@
 package com.haris.grouprestaurants.repositories
 
-import com.haris.data.Group
-import com.haris.data.Result
+import com.haris.data.entities.Group
+import com.haris.data.entities.Result
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {

@@ -1,4 +1,4 @@
-package com.haris.data
+package com.haris.data.entities
 
 data class MenuItem(
     val id: String,

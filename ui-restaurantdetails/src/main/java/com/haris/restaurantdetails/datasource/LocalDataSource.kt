@@ -1,7 +1,7 @@
 package com.haris.restaurantdetails.datasource
 
-import com.haris.data.MenuSubItem
-import com.haris.data.RestaurantDetails
+import com.haris.data.entities.MenuSubItem
+import com.haris.data.entities.RestaurantDetails
 
 interface LocalDataSource {
 

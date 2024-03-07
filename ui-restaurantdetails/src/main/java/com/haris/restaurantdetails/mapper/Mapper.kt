@@ -1,8 +1,8 @@
 package com.haris.restaurantdetails.mapper
 
-import com.haris.data.MenuItem
-import com.haris.data.MenuSubItem
-import com.haris.data.RestaurantDetails
+import com.haris.data.entities.MenuItem
+import com.haris.data.entities.MenuSubItem
+import com.haris.data.entities.RestaurantDetails
 import com.haris.restaurantdetails.RestaurantDetailsEntity
 import com.haris.restaurantdetails.data.MenuItemEntity
 import com.haris.restaurantdetails.data.MenuSubItemEntity

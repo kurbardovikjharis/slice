@@ -1,6 +1,6 @@
 package com.haris.home.datasource
 
-import com.haris.data.Restaurant
+import com.haris.data.entities.Restaurant
 
 interface LocalDataSource {
 

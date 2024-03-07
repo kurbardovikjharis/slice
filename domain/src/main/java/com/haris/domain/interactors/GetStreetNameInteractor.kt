@@ -1,6 +1,6 @@
 package com.haris.domain.interactors
 
-import com.haris.domain.repositories.UserRepository
+import com.haris.data.repositories.UserRepository
 import javax.inject.Inject
 
 class GetStreetNameInteractor @Inject constructor(
