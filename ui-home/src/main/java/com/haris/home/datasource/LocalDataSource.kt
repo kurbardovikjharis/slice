@@ -1,8 +1,9 @@
 package com.haris.home.datasource
 
-import com.haris.data.entities.Restaurant
+import androidx.paging.PagingSource
+import com.haris.data.entities.RestaurantEntity
 
 interface LocalDataSource {
 
-    suspend fun getData(): List<Restaurant>
+    fun observeForPaging(): PagingSource<Int, RestaurantEntity>
 }

@@ -35,7 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.haris.data.entities.Restaurant
+import com.haris.data.entities.RestaurantEntity
 import com.haris.grouprestaurants.GroupRestaurantsViewModel
 import com.haris.grouprestaurants.GroupRestaurantsViewState
 import com.haris.resources.R
@@ -127,7 +127,7 @@ private fun Success(
     state: GroupRestaurantsViewState.Success,
     navigate: (String) -> Unit
 ) {
-    Content(state.restaurants, navigate)
+    Content(state.restaurantEntities, navigate)
 }
 
 @Composable
@@ -141,8 +141,8 @@ private fun Error(
         verticalArrangement = Arrangement.spacedBy(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (state.restaurants != null) {
-            Content(state.restaurants, navigate)
+        if (state.restaurantEntities != null) {
+            Content(state.restaurantEntities, navigate)
         } else {
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -167,8 +167,8 @@ private fun Loading(
         verticalArrangement = Arrangement.spacedBy(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (state.restaurants != null) {
-            Content(state.restaurants, navigate)
+        if (state.restaurantEntities != null) {
+            Content(state.restaurantEntities, navigate)
         } else {
             Loading()
         }
@@ -177,7 +177,7 @@ private fun Loading(
 
 @Composable
 private fun Content(
-    data: List<Restaurant>,
+    data: List<RestaurantEntity>,
     navigate: (String) -> Unit
 ) {
     LazyColumn(
@@ -194,7 +194,7 @@ private fun Content(
 }
 
 @Composable
-private fun Item(item: Restaurant, navigate: (String) -> Unit) {
+private fun Item(item: RestaurantEntity, navigate: (String) -> Unit) {
     Card(
         onClick = { navigate(item.id) },
         modifier = Modifier.fillMaxWidth(),

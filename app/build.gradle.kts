@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin)
-    kotlin("kapt")
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt)
 }
 
@@ -52,6 +52,7 @@ android {
 }
 
 dependencies {
+    implementation(project(":data"))
     implementation(project(":resources"))
     implementation(project(":ui-account"))
     implementation(project(":ui-grouprestaurants"))

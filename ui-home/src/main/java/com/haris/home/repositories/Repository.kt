@@ -1,12 +1,9 @@
 package com.haris.home.repositories
 
-import com.haris.data.entities.Restaurant
-import com.haris.data.entities.Result
-import kotlinx.coroutines.flow.Flow
+import androidx.paging.PagingSource
+import com.haris.data.entities.RestaurantEntity
 
 interface Repository {
 
-    val data: Flow<Result<List<Restaurant>>>
-
-    suspend fun getData()
+    fun observeRestaurants(): PagingSource<Int, RestaurantEntity>
 }

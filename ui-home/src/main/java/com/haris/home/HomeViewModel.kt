@@ -2,14 +2,17 @@ package com.haris.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.haris.data.entities.Restaurant
-import com.haris.data.entities.Result
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.haris.data.entities.RestaurantEntity
 import com.haris.domain.interactors.GetStreetNameInteractor
-import com.haris.home.interactors.GetRestaurantsInteractor
+import com.haris.home.interactors.ObservePagedRestaurants
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.annotation.concurrent.Immutable
@@ -18,82 +21,42 @@ import javax.inject.Inject
 @HiltViewModel
 internal class HomeViewModel @Inject constructor(
     getStreetNameInteractor: GetStreetNameInteractor,
-    private val getRestaurantsInteractor: GetRestaurantsInteractor,
+    private val observePagedRestaurants: ObservePagedRestaurants,
 ) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            getRestaurantsInteractor()
+            observePagedRestaurants(
+                ObservePagedRestaurants.Parameters(
+                    pagingConfig = PAGING_CONFIG,
+                ),
+            )
         }
         viewModelScope.launch {
             getStreetNameInteractor()
         }
     }
 
-    val state: StateFlow<HomeViewState> =
-        combine(
-            getStreetNameInteractor.flow,
-            getRestaurantsInteractor.flow
-        ) { streetName, restaurantResult ->
-            when (restaurantResult) {
-                is Result.Success -> {
-                    HomeViewState.Success(
-                        streetName = streetName,
-                        restaurants = restaurantResult.data ?: emptyList()
-                    )
-                }
+    val pagedList: Flow<PagingData<RestaurantEntity>> =
+        observePagedRestaurants.flow.cachedIn(viewModelScope)
 
-                is Result.Loading -> {
-                    HomeViewState.Loading(
-                        streetName = streetName,
-                        restaurants = restaurantResult.data
-                    )
-                }
+    val state: StateFlow<HomeViewState> = getStreetNameInteractor.flow.map {
+        HomeViewState(it)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(),
+        initialValue = HomeViewState()
+    )
 
-                is Result.Error -> {
-                    HomeViewState.Error(
-                        message = restaurantResult.message ?: "",
-                        streetName = streetName,
-                        restaurants = restaurantResult.data
-                    )
-                }
-
-                is Result.None -> HomeViewState.Empty
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = HomeViewState.Empty
+    companion object {
+        private val PAGING_CONFIG = PagingConfig(
+            pageSize = 4,
+            initialLoadSize = 8,
         )
-
-    fun retry() {
-        viewModelScope.launch {
-            getRestaurantsInteractor()
-        }
     }
 }
 
 @Immutable
-internal sealed class HomeViewState(
-    open val streetName: String = ""
-) {
-
-    data class Success(
-        override val streetName: String,
-        val restaurants: List<Restaurant>
-    ) : HomeViewState(streetName)
-
-    data class Error(
-        val message: String,
-        override val streetName: String,
-        val restaurants: List<Restaurant>?
-    ) : HomeViewState(streetName)
-
-    data class Loading(
-        override val streetName: String,
-        val restaurants: List<Restaurant>?
-    ) : HomeViewState(streetName)
-
-    data object Empty : HomeViewState()
-}
-
+internal data class HomeViewState(
+    val streetName: String = ""
+)

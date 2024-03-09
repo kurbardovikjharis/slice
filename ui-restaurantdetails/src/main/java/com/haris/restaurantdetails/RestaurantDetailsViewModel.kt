@@ -3,9 +3,9 @@ package com.haris.restaurantdetails
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.haris.data.entities.MenuSubItem
+import com.haris.data.entities.MenuItemEntity
+import com.haris.data.entities.MenuSubItemEntity
 import com.haris.data.entities.Result
-import com.haris.restaurantdetails.data.MenuItemEntity
 import com.haris.restaurantdetails.interactors.GetRestaurantDetailsInteractor
 import com.haris.restaurantdetails.interactors.SearchMenuInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -111,20 +111,20 @@ internal sealed interface RestaurantDetailsViewState {
     data class Success(
         val isSearching: Boolean,
         val term: String,
-        val data: RestaurantDetailsEntity,
+        val data: RestaurantDetails,
     ) : RestaurantDetailsViewState
 
     data class Error(
-        val message: String, val data: RestaurantDetailsEntity?
+        val message: String, val data: RestaurantDetails?
     ) : RestaurantDetailsViewState
 
-    data class Loading(val data: RestaurantDetailsEntity?) : RestaurantDetailsViewState
+    data class Loading(val data: RestaurantDetails?) : RestaurantDetailsViewState
 
     data object Empty : RestaurantDetailsViewState
 }
 
 @Immutable
-internal data class RestaurantDetailsEntity(
+internal data class RestaurantDetails(
     val id: String,
     val name: String,
     val url: String,
@@ -133,5 +133,5 @@ internal data class RestaurantDetailsEntity(
     val time: String,
     val distance: String,
     val menuItems: List<MenuItemEntity>,
-    val searchedMenu: List<MenuSubItem> = emptyList()
+    val searchedMenu: List<MenuSubItemEntity> = emptyList()
 )

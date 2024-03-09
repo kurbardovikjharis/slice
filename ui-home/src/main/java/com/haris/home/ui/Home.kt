@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,11 +29,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import com.haris.compose.SliceTopAppBar
-import com.haris.data.entities.Restaurant
+import com.haris.data.entities.RestaurantEntity
 import com.haris.home.HomeViewModel
-import com.haris.home.HomeViewState
 import com.haris.resources.R
 
 @Composable
@@ -45,6 +45,7 @@ fun Home(navigate: (String) -> Unit) {
 @Composable
 private fun Home(viewModel: HomeViewModel, navigate: (String) -> Unit) {
     val state = viewModel.state.collectAsState().value
+    val pagingItems = viewModel.pagedList.collectAsLazyPagingItems()
 
     Scaffold(
         topBar = { SliceTopAppBar(state.streetName) }
@@ -54,86 +55,13 @@ private fun Home(viewModel: HomeViewModel, navigate: (String) -> Unit) {
                 .fillMaxSize()
                 .padding(it)
         ) {
-            HandleState(
-                state = state,
-                navigate = navigate,
-                retry = { viewModel.retry() }
-            )
+            Restaurants(list = pagingItems, navigate = navigate)
         }
     }
 }
 
 @Composable
-internal fun HandleState(state: HomeViewState, navigate: (String) -> Unit, retry: () -> Unit) {
-    when (state) {
-        is HomeViewState.Success -> {
-            Success(state = state, navigate = navigate)
-        }
-
-        is HomeViewState.Error -> {
-            Error(state = state, navigate = navigate, retry = retry)
-        }
-
-        is HomeViewState.Loading -> {
-            Loading(state = state, navigate = navigate)
-        }
-
-        is HomeViewState.Empty -> {}
-    }
-}
-
-@Composable
-private fun Success(state: HomeViewState.Success, navigate: (String) -> Unit) {
-    Restaurants(state.restaurants, navigate)
-}
-
-@Composable
-private fun Error(
-    state: HomeViewState.Error,
-    navigate: (String) -> Unit,
-    retry: () -> Unit
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (state.restaurants != null) {
-            Restaurants(state.restaurants, navigate)
-        } else {
-            Spacer(modifier = Modifier.height(32.dp))
-        }
-
-        Text(
-            modifier = Modifier.padding(16.dp),
-            text = state.message
-        )
-        Button(onClick = retry) {
-            Text(text = stringResource(id = R.string.retry))
-        }
-    }
-}
-
-@Composable
-private fun Loading(
-    state: HomeViewState.Loading,
-    navigate: (String) -> Unit
-) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (state.restaurants != null) {
-            Restaurants(state.restaurants, navigate)
-        } else {
-            Loading()
-        }
-    }
-}
-
-@Composable
-private fun Restaurants(sensors: List<Restaurant>, navigate: (String) -> Unit) {
+private fun Restaurants(list: LazyPagingItems<RestaurantEntity>, navigate: (String) -> Unit) {
     LazyColumn(
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
@@ -141,14 +69,14 @@ private fun Restaurants(sensors: List<Restaurant>, navigate: (String) -> Unit) {
         item {
             Spacer(modifier = Modifier.height(16.dp))
         }
-        items(items = sensors, key = { it.id }) {
-            Item(item = it, navigate = navigate)
+        items(items = list.itemSnapshotList.items, key = { it.id }) { item ->
+            Item(item = item, navigate = navigate)
         }
     }
 }
 
 @Composable
-private fun Item(item: Restaurant, navigate: (String) -> Unit) {
+private fun Item(item: RestaurantEntity, navigate: (String) -> Unit) {
     Card(
         onClick = { navigate(item.id) },
         modifier = Modifier.fillMaxWidth(),

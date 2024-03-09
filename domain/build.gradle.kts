@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlin)
-    kotlin("kapt")
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.hilt)
 }
 
@@ -36,6 +36,8 @@ android {
 
 dependencies {
     implementation(project(":data"))
+
+    implementation(libs.androidx.paging.common.ktx)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)

@@ -1,7 +1,7 @@
 package com.haris.search.repositories
 
-import com.haris.data.entities.Group
-import com.haris.data.entities.Restaurant
+import com.haris.data.entities.GroupEntity
+import com.haris.data.entities.RestaurantEntity
 import com.haris.data.entities.Result
 import com.haris.search.datasource.LocalDataSource
 import kotlinx.coroutines.flow.Flow
@@ -13,14 +13,14 @@ internal class RepositoryImpl @Inject constructor(
     private val dataSource: LocalDataSource
 ) : Repository {
 
-    private val _data: MutableStateFlow<Result<List<Group>>> =
+    private val _data: MutableStateFlow<Result<List<GroupEntity>>> =
         MutableStateFlow(Result.None())
-    private val _searchedRestaurants: MutableStateFlow<List<Restaurant>> =
+    private val _searchedRestaurants: MutableStateFlow<List<RestaurantEntity>> =
         MutableStateFlow(emptyList())
 
-    override val data: Flow<Result<List<Group>>>
+    override val data: Flow<Result<List<GroupEntity>>>
         get() = _data
-    override val searchedRestaurants: Flow<List<Restaurant>>
+    override val searchedRestaurants: Flow<List<RestaurantEntity>>
         get() = _searchedRestaurants
 
     override suspend fun getData() {

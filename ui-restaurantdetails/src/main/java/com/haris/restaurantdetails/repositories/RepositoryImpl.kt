@@ -1,8 +1,9 @@
 package com.haris.restaurantdetails.repositories
 
-import com.haris.data.entities.MenuSubItem
+import com.haris.data.entities.MenuSubItemEntity
+import com.haris.data.entities.RestaurantDetailsEntity
 import com.haris.data.entities.Result
-import com.haris.restaurantdetails.RestaurantDetailsEntity
+import com.haris.restaurantdetails.RestaurantDetails
 import com.haris.restaurantdetails.datasource.LocalDataSource
 import com.haris.restaurantdetails.mapper.toRestaurantDetailsEntity
 import kotlinx.coroutines.flow.Flow
@@ -14,14 +15,14 @@ internal class RepositoryImpl @Inject constructor(
     private val dataSource: LocalDataSource
 ) : Repository {
 
-    private val _data: MutableStateFlow<Result<RestaurantDetailsEntity>> =
+    private val _data: MutableStateFlow<Result<RestaurantDetails>> =
         MutableStateFlow(Result.None())
-    private val _searchedMenu: MutableStateFlow<List<MenuSubItem>> =
+    private val _searchedMenu: MutableStateFlow<List<MenuSubItemEntity>> =
         MutableStateFlow(emptyList())
 
-    override val data: Flow<Result<RestaurantDetailsEntity>>
+    override val data: Flow<Result<RestaurantDetails>>
         get() = _data
-    override val searchedMenu: Flow<List<MenuSubItem>>
+    override val searchedMenu: Flow<List<MenuSubItemEntity>>
         get() = _searchedMenu
 
     override suspend fun getData(id: String) {

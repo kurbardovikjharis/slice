@@ -3,7 +3,7 @@ package com.haris.grouprestaurants
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.haris.data.entities.Restaurant
+import com.haris.data.entities.RestaurantEntity
 import com.haris.data.entities.Result
 import com.haris.grouprestaurants.interactors.GetGroupRestaurantsInteractor
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -40,14 +40,14 @@ internal class GroupRestaurantsViewModel @Inject constructor(
             is Result.Success -> {
                 GroupRestaurantsViewState.Success(
                     title = it.data?.name ?: name ?: "",
-                    restaurants = it.data?.restaurants ?: emptyList()
+                    restaurantEntities = it.data?.restaurantEntities ?: emptyList()
                 )
             }
 
             is Result.Loading -> {
                 GroupRestaurantsViewState.Loading(
                     title = it.data?.name ?: name ?: "",
-                    restaurants = it.data?.restaurants
+                    restaurantEntities = it.data?.restaurantEntities
                 )
             }
 
@@ -55,7 +55,7 @@ internal class GroupRestaurantsViewModel @Inject constructor(
                 GroupRestaurantsViewState.Error(
                     message = it.message ?: "",
                     title = it.data?.name ?: name ?: "",
-                    restaurants = it.data?.restaurants
+                    restaurantEntities = it.data?.restaurantEntities
                 )
             }
 
@@ -83,18 +83,18 @@ internal sealed class GroupRestaurantsViewState(
 
     data class Success(
         override val title: String,
-        val restaurants: List<Restaurant>
+        val restaurantEntities: List<RestaurantEntity>
     ) : GroupRestaurantsViewState(title)
 
     data class Error(
         val message: String,
         override val title: String,
-        val restaurants: List<Restaurant>?
+        val restaurantEntities: List<RestaurantEntity>?
     ) : GroupRestaurantsViewState(title)
 
     data class Loading(
         override val title: String,
-        val restaurants: List<Restaurant>?
+        val restaurantEntities: List<RestaurantEntity>?
     ) : GroupRestaurantsViewState(title)
 
     data object Empty : GroupRestaurantsViewState()

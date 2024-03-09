@@ -38,8 +38,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.haris.compose.SliceTopAppBar
-import com.haris.data.entities.Group
-import com.haris.data.entities.Restaurant
+import com.haris.data.entities.GroupEntity
+import com.haris.data.entities.RestaurantEntity
 import com.haris.resources.R
 import com.haris.search.SensorsViewModel
 import com.haris.search.SensorsViewState
@@ -133,8 +133,8 @@ private fun Success(
 ) {
     Groups(
         term = state.term,
-        groups = state.groups,
-        searchedRestaurants = state.searchedRestaurants,
+        groupEntities = state.groupEntities,
+        searchedRestaurantEntities = state.searchedRestaurantEntities,
         onTermChanged = onTermChanged,
         navigate = navigate,
         navigateToGroupRestaurants = navigateToGroupRestaurants,
@@ -154,11 +154,11 @@ private fun Error(
         verticalArrangement = Arrangement.spacedBy(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (state.groups != null) {
+        if (state.groupEntities != null) {
             Groups(
                 term = state.term,
-                groups = state.groups,
-                searchedRestaurants = state.searchedRestaurants,
+                groupEntities = state.groupEntities,
+                searchedRestaurantEntities = state.searchedRestaurantEntities,
                 onTermChanged = onTermChanged,
                 navigate = navigate,
                 navigateToGroupRestaurants = navigateToGroupRestaurants
@@ -189,11 +189,11 @@ private fun Loading(
         verticalArrangement = Arrangement.spacedBy(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (state.groups != null) {
+        if (state.groupEntities != null) {
             Groups(
                 term = state.term,
-                groups = state.groups,
-                searchedRestaurants = state.searchedRestaurants,
+                groupEntities = state.groupEntities,
+                searchedRestaurantEntities = state.searchedRestaurantEntities,
                 onTermChanged = onTermChanged,
                 navigate = navigate,
                 navigateToGroupRestaurants = navigateToGroupRestaurants
@@ -207,8 +207,8 @@ private fun Loading(
 @Composable
 private fun Groups(
     term: String,
-    groups: List<Group>,
-    searchedRestaurants: List<Restaurant>,
+    groupEntities: List<GroupEntity>,
+    searchedRestaurantEntities: List<RestaurantEntity>,
     onTermChanged: (String) -> Unit,
     navigate: (String) -> Unit,
     navigateToGroupRestaurants: (String, String) -> Unit
@@ -251,7 +251,7 @@ private fun Groups(
             )
         }
         if (term.isEmpty()) {
-            items(items = groups, key = { it.id }) {
+            items(items = groupEntities, key = { it.id }) {
                 Group(
                     item = it,
                     navigate = navigate,
@@ -259,7 +259,7 @@ private fun Groups(
                 )
             }
         } else {
-            items(items = searchedRestaurants, key = { it.id }) {
+            items(items = searchedRestaurantEntities, key = { it.id }) {
                 SearchedRestaurant(item = it, navigate = navigate)
             }
         }
@@ -268,7 +268,7 @@ private fun Groups(
 
 @Composable
 private fun Group(
-    item: Group,
+    item: GroupEntity,
     navigate: (String) -> Unit,
     navigateToGroupRestaurants: (String, String) -> Unit
 ) {
@@ -297,7 +297,7 @@ private fun Group(
             contentPadding = PaddingValues(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(items = item.restaurants, key = { it.id }) {
+            items(items = item.restaurantEntities, key = { it.id }) {
                 Restaurant(item = it, navigate = navigate)
             }
         }
@@ -305,7 +305,7 @@ private fun Group(
 }
 
 @Composable
-private fun Restaurant(item: Restaurant, navigate: (String) -> Unit) {
+private fun Restaurant(item: RestaurantEntity, navigate: (String) -> Unit) {
     Card(
         onClick = { navigate(item.id) },
         modifier = Modifier.fillMaxWidth(),
@@ -370,7 +370,7 @@ private fun Restaurant(item: Restaurant, navigate: (String) -> Unit) {
 
 @Composable
 private fun SearchedRestaurant(
-    item: Restaurant,
+    item: RestaurantEntity,
     navigate: (String) -> Unit
 ) {
     Card(

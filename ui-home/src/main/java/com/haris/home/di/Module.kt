@@ -1,5 +1,6 @@
 package com.haris.home.di
 
+import com.haris.data.SliceDatabase
 import com.haris.home.datasource.LocalDataSource
 import com.haris.home.datasource.LocalDataSourceImpl
 import com.haris.home.repositories.Repository
@@ -14,8 +15,8 @@ import dagger.hilt.android.components.ViewModelComponent
 internal object Module {
 
     @Provides
-    fun provideDataSource(): LocalDataSource {
-        return LocalDataSourceImpl()
+    fun provideDataSource(database: SliceDatabase): LocalDataSource {
+        return LocalDataSourceImpl(database)
     }
 
     @Provides

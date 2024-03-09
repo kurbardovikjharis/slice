@@ -2,8 +2,8 @@ package com.haris.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.haris.data.entities.Group
-import com.haris.data.entities.Restaurant
+import com.haris.data.entities.GroupEntity
+import com.haris.data.entities.RestaurantEntity
 import com.haris.data.entities.Result
 import com.haris.domain.interactors.GetStreetNameInteractor
 import com.haris.search.interactors.GetGroupsInteractor
@@ -48,8 +48,8 @@ internal class SensorsViewModel @Inject constructor(
                     SensorsViewState.Success(
                         streetName = streetName,
                         term = term,
-                        groups = groupsResult.data ?: emptyList(),
-                        searchedRestaurants = searchedRestaurants,
+                        groupEntities = groupsResult.data ?: emptyList(),
+                        searchedRestaurantEntities = searchedRestaurants,
                     )
                 }
 
@@ -57,8 +57,8 @@ internal class SensorsViewModel @Inject constructor(
                     SensorsViewState.Loading(
                         streetName = streetName,
                         term = term,
-                        groups = groupsResult.data,
-                        searchedRestaurants = searchedRestaurants,
+                        groupEntities = groupsResult.data,
+                        searchedRestaurantEntities = searchedRestaurants,
                     )
                 }
 
@@ -67,8 +67,8 @@ internal class SensorsViewModel @Inject constructor(
                         term = term,
                         streetName = streetName,
                         message = groupsResult.message ?: "",
-                        groups = groupsResult.data,
-                        searchedRestaurants = searchedRestaurants,
+                        groupEntities = groupsResult.data,
+                        searchedRestaurantEntities = searchedRestaurants,
                     )
                 }
 
@@ -102,23 +102,23 @@ internal sealed class SensorsViewState(
     data class Success(
         override val streetName: String,
         val term: String,
-        val groups: List<Group>,
-        val searchedRestaurants: List<Restaurant>,
+        val groupEntities: List<GroupEntity>,
+        val searchedRestaurantEntities: List<RestaurantEntity>,
     ) : SensorsViewState(streetName)
 
     data class Error(
         val message: String,
         override val streetName: String,
         val term: String,
-        val groups: List<Group>?,
-        val searchedRestaurants: List<Restaurant>,
+        val groupEntities: List<GroupEntity>?,
+        val searchedRestaurantEntities: List<RestaurantEntity>,
     ) : SensorsViewState(streetName)
 
     data class Loading(
         val term: String,
         override val streetName: String,
-        val groups: List<Group>?,
-        val searchedRestaurants: List<Restaurant>,
+        val groupEntities: List<GroupEntity>?,
+        val searchedRestaurantEntities: List<RestaurantEntity>,
     ) : SensorsViewState(streetName)
 
     data object Empty : SensorsViewState("")

@@ -1,8 +1,8 @@
 package com.haris.grouprestaurants.datasource
 
-import com.haris.data.entities.Group
+import com.haris.data.entities.GroupEntity
 
 interface LocalDataSource {
 
-    suspend fun getData(id: String): Group?
+    suspend fun getData(id: String): GroupEntity?
 }

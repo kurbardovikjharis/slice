@@ -44,9 +44,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.haris.data.entities.MenuSubItem
+import com.haris.data.entities.MenuItemEntity
+import com.haris.data.entities.MenuSubItemEntity
 import com.haris.resources.R
-import com.haris.restaurantdetails.data.MenuItemEntity
 import kotlinx.coroutines.launch
 
 @Composable
@@ -242,7 +242,7 @@ private fun Loading(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun Content(
-    data: RestaurantDetailsEntity,
+    data: RestaurantDetails,
     isCollapsed: Boolean,
     isSearching: Boolean,
     onSearchClicked: () -> Unit
@@ -283,7 +283,7 @@ private fun Content(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun Header(data: RestaurantDetailsEntity, isCollapsed: Boolean) {
+private fun Header(data: RestaurantDetails, isCollapsed: Boolean) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -419,8 +419,9 @@ private fun MenuItem(item: MenuItemEntity, isLastItem: Boolean) {
         item.items.forEach {
             Column {
                 Text(text = it.title, style = MaterialTheme.typography.titleLarge)
-                if (it.description.isNotEmpty()) {
-                    Text(text = it.description, style = MaterialTheme.typography.titleMedium)
+                val description = it.description
+                if (description?.isNotEmpty() == true) {
+                    Text(text = description, style = MaterialTheme.typography.titleMedium)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = it.price, style = MaterialTheme.typography.titleMedium)
@@ -438,7 +439,7 @@ private fun MenuItem(item: MenuItemEntity, isLastItem: Boolean) {
 }
 
 @Composable
-private fun SearchedMenuSubItem(item: MenuSubItem) {
+private fun SearchedMenuSubItem(item: MenuSubItemEntity) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

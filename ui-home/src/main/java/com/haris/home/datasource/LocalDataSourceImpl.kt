@@ -1,16 +1,15 @@
 package com.haris.home.datasource
 
-import com.haris.data.entities.Restaurant
-import com.haris.data.restaurants
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
+import androidx.paging.PagingSource
+import com.haris.data.SliceDatabase
+import com.haris.data.entities.RestaurantEntity
+import javax.inject.Inject
 
-internal class LocalDataSourceImpl : LocalDataSource {
+internal class LocalDataSourceImpl @Inject constructor(
+    private val database: SliceDatabase
+) : LocalDataSource {
 
-    override suspend fun getData(): List<Restaurant> = withContext(Dispatchers.IO) {
-        delay(2000) // simulate network call
-
-        return@withContext restaurants
+    override fun observeForPaging(): PagingSource<Int, RestaurantEntity> {
+        return database.restaurantDao().pagingSource()
     }
 }

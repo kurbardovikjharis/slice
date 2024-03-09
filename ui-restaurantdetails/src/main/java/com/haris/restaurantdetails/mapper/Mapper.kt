@@ -1,14 +1,10 @@
 package com.haris.restaurantdetails.mapper
 
-import com.haris.data.entities.MenuItem
-import com.haris.data.entities.MenuSubItem
-import com.haris.data.entities.RestaurantDetails
-import com.haris.restaurantdetails.RestaurantDetailsEntity
-import com.haris.restaurantdetails.data.MenuItemEntity
-import com.haris.restaurantdetails.data.MenuSubItemEntity
+import com.haris.data.entities.RestaurantDetailsEntity
+import com.haris.restaurantdetails.RestaurantDetails
 
-internal fun RestaurantDetails.toRestaurantDetailsEntity(): RestaurantDetailsEntity =
-    RestaurantDetailsEntity(
+internal fun RestaurantDetailsEntity.toRestaurantDetailsEntity(): RestaurantDetails =
+    RestaurantDetails(
         id = id,
         name = name,
         url = url,
@@ -16,20 +12,5 @@ internal fun RestaurantDetails.toRestaurantDetailsEntity(): RestaurantDetailsEnt
         numberOfRatings = numberOfRatings,
         time = time,
         distance = distance,
-        menuItems = menuItems.map { it.toMenuItemEntity() }
-    )
-
-internal fun MenuItem.toMenuItemEntity(): MenuItemEntity =
-    MenuItemEntity(
-        id = id,
-        title = title,
-        items = items.map { it.toMenuSubItemEntity() }
-    )
-
-internal fun MenuSubItem.toMenuSubItemEntity(): MenuSubItemEntity =
-    MenuSubItemEntity(
-        id = id,
-        title = title,
-        description = description ?: "",
-        price = price
+        menuItems = menuItemEntities
     )
